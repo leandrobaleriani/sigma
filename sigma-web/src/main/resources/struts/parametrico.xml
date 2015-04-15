@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<package name="parametrico" extends="json-default" namespace="/parametrico">
+		<action name="ajax" class="parametrico.action">
+			<result name="opciones_localidades">/view/parametrico/opciones_localidades.jsp</result>
+		</action>
+	</package>
+
+</struts>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="generic.hb.dao" class="sigma.dao.impl.GenericHBDAOImpl" abstract="true">
+		 <property name="sessionFactory" ref="spring.hibernate.session.factory" />
+	</bean>
+
+	<bean id="user.dao" class="sigma.dao.impl.UserDAOImpl" parent="generic.hb.dao">
+		<property name="domainClass" value="sigma.entities.User"/>
+	</bean>
+	
+	<bean id="parametro.dao" class="sigma.dao.impl.ParametroDAOImpl" parent="generic.hb.dao">
+		<property name="domainClass" value="sigma.entities.Parametro"/>
+	</bean>
+	
+	<bean id="role.dao" class="sigma.dao.impl.RoleDAOImpl" parent="generic.hb.dao">
+		<property name="domainClass" value="sigma.entities.Role"/>
+	</bean>
+	
+	<bean id="persona.dao" class="sigma.dao.impl.PersonaDAOImpl" parent="generic.hb.dao">
+		<property name="domainClass" value="sigma.entities.Persona"/>
+	</bean>
+
+	<bean id="localidad.dao" class="sigma.dao.impl.LocalidadDAOImpl" parent="generic.hb.dao">
+		<property name="domainClass" value="sigma.entities.Localidad"/>
+	</bean>
+	
+	<bean id="provincia.dao" class="sigma.dao.impl.ProvinciaDAOImpl" parent="generic.hb.dao">
+		<property name="domainClass" value="sigma.entities.Provincia"/>
+	</bean>
+	
+	<bean id="obrasocial.dao" class="sigma.dao.impl.ObraSocialDAOImpl" parent="generic.hb.dao">
+		<property name="domainClass" value="sigma.entities.ObraSocial"/>
+	</bean>
+	
+	<bean id="barrio.dao" class="sigma.dao.impl.BarrioDAOImpl" parent="generic.hb.dao">
+		<property name="domainClass" value="sigma.entities.Barrio"/>
+	</bean>	
+	
+	<bean id="atencion.dao" class="sigma.dao.impl.AtencionDAOImpl" parent="generic.hb.dao">
+		<property name="domainClass" value="sigma.entities.Atencion"/>
+	</bean>	
+	
+	<bean id="lugaratencion.dao" class="sigma.dao.impl.LugarAtencionDAOImpl" parent="generic.hb.dao">
+		<property name="domainClass" value="sigma.entities.LugarAtencion"/>
+	</bean>		
+</beans>
+

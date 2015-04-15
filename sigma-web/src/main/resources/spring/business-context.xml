@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="user.tx.bo" class="sigma.bo.impl.UserBOImpl">
+		<property name="userDAO" ref="user.dao" />
+	</bean>
+
+	<bean id="role.tx.bo" class="sigma.bo.impl.RoleBOImpl">
+		<property name="roleDAO" ref="role.dao" />
+	</bean>
+
+	<bean id="persona.tx.bo" class="sigma.bo.impl.PersonaBOImpl">
+		<property name="personaDAO" ref="persona.dao" />
+	</bean>
+
+	<bean id="atencion.tx.bo" class="sigma.bo.impl.AtencionBOImpl">
+		<property name="atencionDAO" ref="atencion.dao" />
+	</bean>
+
+	<bean id="parametrico.tx.bo" class="sigma.bo.impl.ParametricoBOImpl">
+		<property name="provinciaDAO" ref="provincia.dao" />
+		<property name="localidadDAO" ref="localidad.dao" />
+		<property name="obraSocialDAO" ref="obrasocial.dao" />
+		<property name="barrioDAO" ref="barrio.dao" />
+		<property name="lugarAtencionDAO" ref="lugaratencion.dao" />
+	</bean>
+
+</beans>
+

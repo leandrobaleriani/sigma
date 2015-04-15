@@ -1,0 +1,163 @@
+body {
+	background-image: url(../images/bg1.png);
+	background-size: cover;
+}
+
+.panel-primary2 {
+	border-color: #2C3E50;
+}
+
+h1,.h1,h2,.h2,h3,.h3,h4,.h4 {
+	margin-bottom: 5px !important;
+	margin-top: 5px !important;
+}
+
+.table>thead>tr>th,.table>tbody>tr>th,.table>tfoot>tr>th,.table>thead>tr>td,.table>tbody>tr>td,.table>tfoot>tr>td
+	{
+	border-top: 0px;
+}
+
+.container-fluid {
+	margin-top: 10px !important;
+}
+
+.panel-heading {
+	padding-left: 10%;
+}
+
+/**** Responsive ****/
+
+/* Small devices (tablets, 768px and up) */
+@media ( min-width : 768px) {
+	.logo {
+		height: 32px;
+	}
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media ( min-width : 992px) {
+	.logo {
+		height: 40px;
+	}
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media ( min-width : 1200px) {
+	.logo {
+		height: 56px;
+	}
+}
+
+.well {
+	background-color: #f5f5f5;
+	border: 1px solid #e3e3e3;
+	border-radius: 0;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+	margin-bottom: 20px;
+	min-height: 20px;
+	padding: 19px;
+}
+
+.control-label-left {
+	/* text-align:right; */
+	text-align: left !important;
+}
+
+body {
+	text-transform: uppercase;
+}
+
+.navbar-inverse2 {
+	background-color: red;
+}
+
+.row-centered {
+	text-align: center;
+}
+
+.col-centered {
+	display: inline-block;
+	float: none;
+	/* reset the text-align */
+	text-align: left;
+	/* inline-block space fix */
+	margin-right: -4px;
+}
+
+.checkboxLabel {
+	font-weight: normal !important;
+	cursor: pointer;
+}
+
+.modal-vertical-centered {
+	transform: translate(0, 50%) !important;
+	-ms-transform: translate(0, 50%) !important; /* IE 9 */
+	-webkit-transform: translate(0, 50%) !important;
+	/* Safari and Chrome */
+}
+
+.modal-backdrop {
+	background-color: red;
+}
+
+.header_column {
+	background-color: #2780E3;
+	color: white;
+}
+
+th.sorted a,th.sortable a {
+	display: inline;
+	color: white;
+	font-size: 12px;
+	text-decoration: none;
+	background: url(../images/tablas/arrow_off.png) no-repeat left center;
+	padding-left: 15px;
+}
+
+th.order1 a {
+	background: url(../images/tablas/arrow_up.png) no-repeat left center;
+}
+
+th.order2 a {
+	background: url(../images/tablas/arrow_down.png) no-repeat left center;
+}
+
+/* PAGINADOR -------------------- */
+table.paginador {
+	margin-top: 10px;
+	position: relative;
+	width: 100%;
+}
+
+table.paginador td {
+	color: #333;
+	font-size: 11px;
+	text-align: center;
+	height: 20px;
+}
+
+table.paginador td.resultados {
+	text-align: left;
+	width: 200px;
+}
+
+table.paginador td.numero {
+	text-align: right;
+	width: 200px;
+}
+
+table.paginador td a {
+	color: #333;
+	text-decoration: none;
+}
+
+table.paginador td span.activo {
+	cursor: default;
+	color: #0097d0;
+	font-weight: bold;
+}
+
+table.paginador td img {
+	border: none;
+	top: 5px;
+}

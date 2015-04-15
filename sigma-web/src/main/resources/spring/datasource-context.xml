@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+	<!-- #####Configuracion de Transacciones##### -->
+
+	<!-- Advice Transaccional -->
+	<tx:advice id="tx.advice.business" transaction-manager="spring.transaction.manager">
+		<!-- the transactional semantics... -->
+		<tx:attributes>
+			<!-- Read Only - Metodos No Transaccionales -->
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="search*" read-only="true" />
+			<!-- Metodos Transaccionales - Todos Excepto los Read Only -->
+			<tx:method name="*" rollback-for="sigma.exceptions.BusinessException"
+				propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- Ejecuciones Transaccionales -->
+	<aop:config>
+		<aop:pointcut id="poincut.bo.tx" expression="bean(*.tx.bo)" />
+		<aop:advisor advice-ref="tx.advice.business" pointcut-ref="poincut.bo.tx" />
+	</aop:config>
+
+	<!-- Transaction manager -->
+	<bean id="spring.transaction.manager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="spring.hibernate.session.factory" />
+	</bean>
+	
+	<!-- #####Configuracion de Acceso a Datos##### -->
+
+	<!-- Data Source - Context.xml Tomcat -->
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/jdbc/AteneaDB" />
+	</bean>
+
+	<!-- Hibernate session factory -->
+	<bean id="spring.hibernate.session.factory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan">
+            <list>
+				<value>sigma.entities</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+</beans>

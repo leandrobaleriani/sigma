@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts  
+ Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+	<constant name="struts.i18n.reload" value="false" />
+	<constant name="struts.i18n.encoding" value="ISO-8859-1" />
+	<constant name="struts.devMode" value="false" />
+	<constant name="struts.objectFactory" value="spring" />
+	<constant name="struts.configuration.xml.reload" value="true" />
+	<constant name="struts.custom.i18n.resources" value="messages,errors" />
+	<constant name="struts.serve.static" value="true" />
+	<constant name="struts.serve.static.browserCache" value="false" />
+
+	<include file="struts/*.xml" />
+
+
+
+	<package name="default" extends="struts-default">
+
+		<global-results>
+			<result name="errorResult">/view/error.jsp</result>
+			<result name="respResult">/view/response.jsp</result>
+		</global-results>
+
+		<global-exception-mappings>
+			<exception-mapping result="errorResult" exception="java.lang.Exception"></exception-mapping>
+		</global-exception-mappings>
+
+		<action name="login" class="login.action">
+			<result>/view/login.jsp</result>
+		</action>
+		<action name="home" class="home.action">
+			<result>/view/home.jsp</result>
+		</action>
+		<action name="showSeleccionarLugarAtencion" class="home.action"
+			method="showSeleccionarLugarAtencion">
+			<result>/view/seleccionarLugarAtencion.jsp</result>
+		</action>
+
+		<action name="seleccionarLugarAtencion" class="home.action"
+			method="seleccionarLugarAtencion">
+			<result type="redirectAction">
+				<param name="actionName">home</param>
+				<param name="namespace">/</param>
+			</result>
+		</action>
+		
+		
+	</package>
+
+</struts>
