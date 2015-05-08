@@ -118,7 +118,7 @@
 			<button type="button" class="close" data-dismiss="modal"
 				aria-hidden="true">×</button>
 			<h4 class="modal-title">
-				<img alt="" height="32px" hspace="5" src="images/user2.png">
+				<img alt="" height="32px" hspace="5" src="images/paciente.png">
 				<s:if test="%{persona.id == null}">
 					<b>Nueva Persona</b>
 				</s:if>

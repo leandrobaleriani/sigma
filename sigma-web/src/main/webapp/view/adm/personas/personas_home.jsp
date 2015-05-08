@@ -11,6 +11,10 @@ $(document).ready(function(){
 
 function search() {
 
+	if(!$("#contenedorAjax").is(":visible")){
+		$("#contenedorAjax").show();
+	}
+	
 	var options = { 
 	    url: '<c:url value="/persona/adm!search.action"/>',
 	    target: '#contenedorAjax'
@@ -123,7 +127,7 @@ $(function(){
 			</div>
 		</fieldset>
 	</form>
-	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 well bs-component" id="contenedorAjax">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 well bs-component" id="contenedorAjax" style="display: none;">
 	</div>
 </div>
 

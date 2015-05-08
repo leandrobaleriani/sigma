@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="css/datepicker.css">
 <link rel="stylesheet" href="css/global.css">
 
-<body style="background-color: #f5f5f5!important;background-image: none!important;">
+<body style="background-color: #F9F9F9!important;background-image: none!important;">
 	<script type="text/javascript">
 		function recepcionar(id) {
 			$('#myModal').modal('show');

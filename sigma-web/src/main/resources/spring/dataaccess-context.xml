@@ -12,14 +12,6 @@
 		<property name="domainClass" value="sigma.entities.User"/>
 	</bean>
 	
-	<bean id="parametro.dao" class="sigma.dao.impl.ParametroDAOImpl" parent="generic.hb.dao">
-		<property name="domainClass" value="sigma.entities.Parametro"/>
-	</bean>
-	
-	<bean id="role.dao" class="sigma.dao.impl.RoleDAOImpl" parent="generic.hb.dao">
-		<property name="domainClass" value="sigma.entities.Role"/>
-	</bean>
-	
 	<bean id="persona.dao" class="sigma.dao.impl.PersonaDAOImpl" parent="generic.hb.dao">
 		<property name="domainClass" value="sigma.entities.Persona"/>
 	</bean>

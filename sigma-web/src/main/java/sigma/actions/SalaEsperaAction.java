@@ -32,22 +32,22 @@ public class SalaEsperaAction extends BaseAction {
 
 	public String showSalaEspera() throws Exception {
 
-		LugarAtencion lugarAtencion = (LugarAtencion) getSession().get(
-				"lugarAtencionMonitor");
-		if (null == lugarAtencion) {
-			List<LugarAtencion> lugaresAtencion = (List<LugarAtencion>) getSession()
-					.get("lstLugaresAtencion");
-			if (null == lugaresAtencion) {
-				lugaresAtencion = parametricoBO.getAllLugaresAtencion();
-				getSession().put("lstLugaresAtencion", lugaresAtencion);
-			}
-			lugarAtencion = lugaresAtencion.get(0);
-			getSession().put("lugarAtencionMonitor", lugarAtencion);
-		}
+//		LugarAtencion lugarAtencion = (LugarAtencion) getSession().get(
+//				"lugarAtencionMonitor");
+//		if (null == lugarAtencion) {
+//			List<LugarAtencion> lugaresAtencion = (List<LugarAtencion>) getSession()
+//					.get("lstLugaresAtencion");
+//			if (null == lugaresAtencion) {
+//				lugaresAtencion = parametricoBO.getAllLugaresAtencion();
+//				getSession().put("lstLugaresAtencion", lugaresAtencion);
+//			}
+//			lugarAtencion = lugaresAtencion.get(0);
+//			getSession().put("lugarAtencionMonitor", lugarAtencion);
+//		}
 		
-		Long idLugarAtencion = lugarAtencion.getId();
+//		Long idLugarAtencion = lugarAtencion.getId();
 		
-		List<Atencion> atenciones = atencionBO.getAtencionesEnEspera(idLugarAtencion);
+		List<Atencion> atenciones = atencionBO.getAtenciones();
 		List<AtencionDTO> atencionesDTO = new ArrayList<AtencionDTO>();
 		if (Utils.isNotEmptyCollection(atenciones)) {
 
@@ -87,7 +87,7 @@ public class SalaEsperaAction extends BaseAction {
 		}
 		LinkedHashMap<String, Object> jsonResponse = createJSONResponse();
 		jsonResponse.put("data", atencionesDTO);
-		jsonResponse.put("lugarAtencion", lugarAtencion.getNombre());
+//		jsonResponse.put("lugarAtencion", lugarAtencion.getNombre());
 		return JSON;
 	}
 

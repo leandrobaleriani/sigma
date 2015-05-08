@@ -29,16 +29,19 @@
 		<security:intercept-url pattern="/**"
 			access="hasRole('SIG-ING')" />
 
+		<!-- <security:form-login login-page="/login.action" -->
+		<!-- always-use-default-target="true" authentication-failure-url="/login.action?error=true" -->
+		<!-- default-target-url="/home.action" authentication-success-handler-ref="authenticationSuccessHandler"/> -->
+
 		<security:form-login login-page="/login.action"
 			always-use-default-target="true" authentication-failure-url="/login.action?error=true"
-			default-target-url="/home.action" authentication-success-handler-ref="authenticationSuccessHandler"/>
+			default-target-url="/home.action" />
 
 		<security:logout logout-success-url="/login.action"
 			invalidate-session="true" />
 	</security:http>
-	
-	<bean id="authenticationSuccessHandler"
-        class="sigma.authentication.CustomAuthenticationSuccessHandler" />
+
+	<bean id="authenticationSuccessHandler" class="sigma.authentication.CustomAuthenticationSuccessHandler" />
 
 	<security:authentication-manager alias="authenticationManager">
 		<security:authentication-provider

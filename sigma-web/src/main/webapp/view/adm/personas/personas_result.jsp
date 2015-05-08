@@ -21,8 +21,8 @@ updateDisplayTagLinks("contenedorAjax");
 		</display:column>
 	<display:column title="NOMBRE COMPLETO" headerClass="header_column"
 		style="width: 20%;" sortable="true" sortName="nombreApellido">
-		<a href="javascript:editarPersona('<s:property value='#attr.personas.id' />');void(0);" ><s:property value="#attr.personas.apellido" />&nbsp;<s:property
-			value="#attr.personas.nombre" /></a>
+		<b><a href="javascript:editarPersona('<s:property value='#attr.personas.id' />');void(0);" ><s:property value="#attr.personas.apellido" />&nbsp;<s:property
+			value="#attr.personas.nombre" /></a></b>
 	</display:column>
 	<display:column headerClass="header_column" property="fechaNacimiento"
 		title="F. NACIMIENTO" style="width: 10%;" format="{0,date,MM-dd-yyyy}" sortable="true" sortName="fechaNacimiento"/>

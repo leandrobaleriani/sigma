@@ -9,22 +9,18 @@
 		$.ajax({
 			url : '<c:url value="/persona/adm.action"/>'
 		}).done(function(data) {
+			$("#menuPersona").addClass("active");
+			$("#menuAtencion").removeClass("active");
 			$("#container").html(data);
 		});
 	}
 	
-	function showUsuarios() {
+	function showAtenciones() {
 		$.ajax({
-			url : '<c:url value="/user/adm.action"/>'
+			url : '<c:url value="/persona/atencion.action"/>'
 		}).done(function(data) {
-			$("#container").html(data);
-		});
-	}
-	
-	function showRoles() {
-		$.ajax({
-			url : '<c:url value="/role/adm.action"/>'
-		}).done(function(data) {
+			$("#menuAtencion").addClass("active");
+			$("#menuPersona").removeClass("active");
 			$("#container").html(data);
 		});
 	}
@@ -52,18 +48,11 @@
 	</div>
 	<div class="navbar-collapse collapse navbar-responsive-collapse">
 		<ul class="nav navbar-nav">
-			<li class="active"><a href="javascript:showPersonas();"> <span
-					class="glyphicon glyphicon-user"></span> Personas
+			<li class="active" id="menuPersona"><a href="javascript:showPersonas();"> <img alt="" src="images/paciente.png" width="22px"> Personas
 			</a></li>
 		</ul>
 		<ul class="nav navbar-nav">
-			<li><a href="javascript:showUsuarios();"> <span
-					class="glyphicon glyphicon-user"></span> Atención
-			</a></li>
-		</ul>
-		<ul class="nav navbar-nav">
-			<li><a href="javascript:showRoles();"> <span
-					class="glyphicon glyphicon-user"></span> Sala de Espera
+			<li  id="menuAtencion"><a href="javascript:showAtenciones();"> <img alt="" src="images/stethoscope.png" width="22px"> Atención
 			</a></li>
 		</ul>
 		<ul class="nav navbar-nav navbar-right">

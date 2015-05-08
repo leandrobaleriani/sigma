@@ -1,7 +1,6 @@
 package sigma.entities;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,6 +12,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.Period;
+
+import sigma.utils.SigmaUtils;
 
 @Entity
 @Table(name = "personas")
@@ -189,5 +194,9 @@ public class Persona extends BaseEntity {
 
 	public String getNombreCompleto() {
 		return this.nombre + " " + this.apellido;
+	}
+	
+	public int getEdad(){
+		return SigmaUtils.getEdad(getFechaNacimiento());
 	}
 }

@@ -8,10 +8,6 @@
 		<property name="userDAO" ref="user.dao" />
 	</bean>
 
-	<bean id="role.tx.bo" class="sigma.bo.impl.RoleBOImpl">
-		<property name="roleDAO" ref="role.dao" />
-	</bean>
-
 	<bean id="persona.tx.bo" class="sigma.bo.impl.PersonaBOImpl">
 		<property name="personaDAO" ref="persona.dao" />
 	</bean>

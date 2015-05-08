@@ -95,13 +95,9 @@ h1 {
 <body>
 	<script>
 	
-	$(document).ready(function(){init();loadSalaEspera();});
-	$(function(){
-		$("#tablero").click(function(){
-			seleccionarLugarAtencion();
-		});
+	$(document).ready(function(){
+		init();loadSalaEspera();
 	});
-	
 	
 	var currentItem = 1;
 	var totalItems = 0;
@@ -113,8 +109,7 @@ h1 {
 			success : function(data) 
 			{
 				var refrescar = false;
-				var jsonData = data.data
-				var lugarAtencion = data.lugarAtencion;
+				var jsonData = data.data;
 				
 				if( currentList == null )
 				{
@@ -133,7 +128,6 @@ h1 {
 				
 				if(refrescar)
 				{
-					$("#lugarAtencion").html(lugarAtencion);
 					$("[id^='espera_']").each(function( index ) {
 						$( this ).remove();
 					});
@@ -188,20 +182,20 @@ h1 {
 			}
 		}
 		
-		var videoPlaying = 1;
-		var videos = ["video1.webm", "video2.webm", "video3.webm"];
+		var videoPlaying = 0;
+		var videos = ["video2.webm", "video3.webm"];
 		function init() {
 
 			var vid = document.getElementById("bgvid");
-// 			vid.volume = 0.9;
-			vid.volume = 0.0;
+			vid.volume = 0.9;
+// 			vid.volume = 0.0;
 			vid.src = '<c:url value="/videos/' + videos[videoPlaying] + '"/>';
 			vid.load();
 			vid.play();
 			vid.addEventListener('ended', function() {
 				videoPlaying++;
-				if(videoPlaying > videos.length){
-					videoPlaying = 1;
+				if(videoPlaying == videos.length){
+					videoPlaying = 0;
 				}
 				vid.src = '<c:url value="/videos/' + videos[videoPlaying] + '"/>';
 				vid.load();
@@ -210,25 +204,12 @@ h1 {
 
 		}
 		
-		function seleccionarLugarAtencion() 
-		{
-			var options = { 
-			        url: '<c:url value="/salaespera/lugarAtencion!showSeleccionarLugarAtencion.action"/>',
-			        target: '#seleccionarLugarTrabajo',
-			        success: function(){
-			        }
-			}; 
-			$('#salaEsperaForm').ajaxForm(options); 
-			$('#salaEsperaForm').submit();
-		}
-		
 	</script>
 
 <form action='<c:url value="/salaespera/show!showSalaEspera.action"/>' id="salaEsperaForm"></form>
 	<video
 		poster=""
-		id="bgvid"> <source id="srcVideo"
-		src='<c:url value="/videos/video3.webm"/>' type="video/webm"></video>
+		id="bgvid"> <source id="srcVideo" type="video/webm"></video>
 
 	<div id="tablero">
 		<h1 class="titulo">Guardia M&eacute;dica</h1>

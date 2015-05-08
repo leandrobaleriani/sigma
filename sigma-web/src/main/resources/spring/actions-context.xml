@@ -9,39 +9,32 @@
 
 	<bean id="home.action" class="sigma.actions.HomeAction" />
 
-	<bean id="user.action" class="sigma.actions.UserAction">
-		<property name="userBO" ref="user.tx.bo" />
-		<property name="roleBO" ref="role.tx.bo" />
-	</bean>
-
-	<bean id="role.action" class="sigma.actions.RoleAction">
-		<property name="roleBO" ref="role.tx.bo" />
-	</bean>
-	
 	<bean id="persona.action" class="sigma.actions.PersonaAction">
 		<property name="paginationHelper" ref="paginator.helper" />
 		<property name="personaBO" ref="persona.tx.bo" />
 		<property name="parametricoBO" ref="parametrico.tx.bo" />
 		<property name="atencionBO" ref="atencion.tx.bo" />
 	</bean>
-	
-	<bean id="parametrico.action" class="sigma.actions.ParametricoAction">
-		<property name="parametricoBO" ref="parametrico.tx.bo" />
-	</bean>
-	
+
 	<bean id="salaespera.action" class="sigma.actions.SalaEsperaAction">
 		<property name="atencionBO" ref="atencion.tx.bo" />
 		<property name="parametricoBO" ref="parametrico.tx.bo" />
 	</bean>
 
-	<bean id="paginator.helper"
-		class="sigma.helpers.PaginationHelper" scope="prototype">
+	<bean id="atencion.action" class="sigma.actions.AtencionAction">
+		<property name="atencionBO" ref="atencion.tx.bo" />
+		<property name="parametricoBO" ref="parametrico.tx.bo" />
+	</bean>
+
+	<bean id="parametrico.action" class="sigma.actions.ParametricoAction">
+		<property name="parametricoBO" ref="parametrico.tx.bo" />
+	</bean>
+
+	<bean id="paginator.helper" class="sigma.helpers.PaginationHelper"
+		scope="prototype">
 		<property name="defaultPageSize" value="10" />
 		<property name="defaultSortField" value="" />
 		<property name="defaultOrder" value="asc" />
 	</bean>
 
 </beans>
-
-
-	
