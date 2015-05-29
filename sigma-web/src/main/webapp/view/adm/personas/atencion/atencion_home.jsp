@@ -4,51 +4,45 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <script>
-	refreshSalaEspera();
+	$(document).ready(function() {
+		requestData_atenciones(false);
+	});
 
-	function refreshSalaEspera() {
+	var interval_atenciones = null;
+	var previous_data_atenciones = null;
 
+	function requestData_atenciones(initialize_atenciones) {
 		$.ajax({
 			url : '<c:url value="/persona/atencion!showEspera.action"/>',
 			global : false
 		}).done(function(data) {
-			refreshAtencionesPendientes();
-			$("#atencion_container").html(data);
-		});
-	}
-	
-	function refreshAtencionesPendientes() {
-
-		$.ajax({
-			url : '<c:url value="/persona/atencion!showAtencionesPendientes.action"/>',
-			global : false
-		}).done(function(data) {
-			refreshAtencionesUltimas();
-			$("#atencion_pendiente_container").html(data);
-		});
-	}
-	
-	function refreshAtencionesUltimas() {
-
-		$.ajax({
-			url : '<c:url value="/persona/atencion!showAtencionesUltimas.action"/>',
-			global : false
-		}).done(function(data) {
-			$("#atencion_ultima_container").html(data);
-						setTimeout(function(){ 
-							refreshSalaEspera(); 
-							}, 10000);
+			if (!initialize_atenciones) {
+				interval_atenciones = setInterval(function() {
+					requestData_atenciones(true);
+				}, 10000);
+				intervals.push(interval_atenciones);
+			}
+			if (null == previous_data_atenciones) {
+				previous_data_atenciones = data;
+				$("#atencion_container").html(data);
+			} else {
+				if (previous_data_atenciones != data) {
+					previous_data_atenciones = data;
+					$("#atencion_container").html(data);
+				}
+			}
 		});
 	}
 
 	function atender(idAtencion) {
 		$("#atencionHidden").val(idAtencion);
 		var options = {
-			url : '<c:url value="/persona/atencion!atender.action"/>',	
+			url : '<c:url value="/persona/atencion!atender.action"/>',
 			dataType : "json",
 			success : function(data) {
 				var mensaje = data.mensaje;
 				if (eval(data.exito)) {
+					resetRequestData_atenciones();
 					diagnosticar(idAtencion);
 				} else {
 					if (eval(data.validacion)) {
@@ -59,54 +53,80 @@
 				}
 			}
 		};
-		
-		$('#atencionForm').ajaxForm(options);
-		$('#atencionForm').submit();
-	}
 
-	function diagnosticar(idAtencion){
-		$("#atencionHidden").val(idAtencion);
-		var options = {
-				url : '<c:url value="/persona/atencion!diagnosticar.action"/>',
-				target : '#modalDialogContainer',
-				success : function() {
-					$('#modalDialogContainer').modal(modalOptions).modal("show");
-					$('#modalDialogContainer').on('shown.bs.modal', function(e) {
-						$("#nroDocumento").focus();
-					});
-				}
-			};
 		$('#atencionForm').ajaxForm(options);
 		$('#atencionForm').submit();
 	}
 	
-	function cerrarModal() {
-		$('#modalDialogContainer').modal('hide');
-		$('#modalDialogContainer').html("");
+	function resetRequestData_atenciones(){
+		clearInterval(interval_atenciones);
+		var index = intervals.indexOf(interval_atenciones);
+		intervals.splice(index, 1);
+		requestData_atenciones(false);
 	}
 
-	$(function() {
+	function cancelarAtencion(idAtencion) {
+		$("#atencionHidden").val(idAtencion);
+		var options = {
+			url : '<c:url value="/persona/atencion!finalizarAusencia.action"/>',
+			dataType : "json",
+			success : function(data) {
+				var mensaje = data.mensaje;
+				if (eval(data.exito)) {
+					resetRequestData_atenciones();
+				} else {
+					if (eval(data.validacion)) {
+						showErrors(data.mensajesValidacion);
+					} else {
+						showMsgError(data.mensaje);
+					}
+				}
+			}
+		};
 
-	});
+		$('#atencionForm').ajaxForm(options);
+		$('#atencionForm').submit();
+	}
+
+	function diagnosticar(idAtencion) {
+		$("#atencionHidden").val(idAtencion);
+		var options = {
+			url : '<c:url value="/persona/atencion!diagnosticar.action"/>',
+			target : '#modalDialogContainer_atencion',
+			success : function() {
+				$('#modalDialogContainer_atencion').modal(modalOptions).modal("show");
+				$('#modalDialogContainer_atencion').on('shown.bs.modal', function(e) {
+					$("#nroDocumento").focus();
+				});
+			}
+		};
+		$('#atencionForm').ajaxForm(options);
+		$('#atencionForm').submit();
+	}
+
+	function cerrarModal() {
+		$('#modalDialogContainer_atencion').modal('hide');
+		$('#modalDialogContainer_atencion').html("");
+	}
 </script>
 
 <br />
 
 <form action="" id="atencionForm">
-<s:hidden id="atencionHidden" name="idAtencion"/>
+	<s:hidden id="atencionHidden" name="idAtencion" />
 </form>
 
-<div class="container">
+<div class="container-fluid">
 	<div class="row">
 		<div class="col-md-4">
-			<div class="panel panel-warning" id="atencion_pendiente_container">
-			</div>
-			<div class="panel panel-info"  id="atencion_ultima_container">
-			</div>
+			<%@include file="../../../porlets/atenciones/atenciones_pendientes.jsp"%>
+
+			<%@include file="../../../porlets/atenciones/atenciones_ultimas.jsp"%>
+
 		</div>
 		<div class="col-md-8" id="atencion_container"></div>
 	</div>
 </div>
 
-<div class="modal fade bs-example-modal-lg" id="modalDialogContainer">
+<div class="modal fade bs-example-modal-lg" id="modalDialogContainer_atencion">
 </div>

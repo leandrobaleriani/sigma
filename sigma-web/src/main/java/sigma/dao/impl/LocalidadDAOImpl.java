@@ -25,16 +25,17 @@ public class LocalidadDAOImpl extends GenericHBDAOImpl<Localidad> implements
 	public List<Localidad> search(LocalidadFilter filter)
 			throws DataAccessException {
 
-		Long idProvincia = filter.getIdProvincia();
+		Long idPartido = filter.getIdPartido();
 
 		Criteria criteria = getSession().createCriteria(Localidad.class);
-		criteria.createAlias("provincia", "provincia");
-		criteria.add(Restrictions.eq("provincia.id", idProvincia));
+		criteria.createAlias("partido", "partido");
+		criteria.add(Restrictions.eq("partido.id", idPartido));
 
 		try {
 			return criteria.list();
 		} catch (HibernateException hexc) {
-			LOGGER.error("search() - Error al realizar busqueda de Usuarios",
+			LOGGER.error(
+					"search() - Error al realizar busqueda de Localidades",
 					hexc);
 			throw new PersistenceException(hexc);
 		}

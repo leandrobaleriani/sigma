@@ -4,6 +4,7 @@ import java.util.List;
 
 import sigma.bo.ParametricoBO;
 import sigma.entities.Localidad;
+import sigma.entities.Partido;
 
 public class ParametricoAction extends BaseAction {
 
@@ -12,12 +13,23 @@ public class ParametricoAction extends BaseAction {
 	 */
 	private static final long serialVersionUID = 3094871401312455972L;
 	private static final String OPCIONES_LOCALIDADES = "opciones_localidades";
+	private static final String OPCIONES_PARTIDOS = "opciones_partidos";
 	private Long idProvincia;
+	private Long idPartido;
 	private ParametricoBO parametricoBO;
 
-	public String getLocalidadesByProvincia() throws Exception {
+	public String getPartidosByProvincia() throws Exception {
+		List<Partido> partidos = parametricoBO
+				.getPartidosByProvincia(idProvincia);
+		if (null != partidos) {
+			getServletRequest().setAttribute("lstPartido", partidos);
+		}
+		return OPCIONES_PARTIDOS;
+	}
+
+	public String getLocalidadesByPartido() throws Exception {
 		List<Localidad> localidades = parametricoBO
-				.getLocalidadesByProvincia(idProvincia);
+				.getLocalidadesByPartido(idPartido);
 		if (null != localidades) {
 			getServletRequest().setAttribute("lstLocalidad", localidades);
 		}
@@ -34,6 +46,14 @@ public class ParametricoAction extends BaseAction {
 
 	public void setParametricoBO(ParametricoBO parametricoBO) {
 		this.parametricoBO = parametricoBO;
+	}
+
+	public Long getIdPartido() {
+		return idPartido;
+	}
+
+	public void setIdPartido(Long idPartido) {
+		this.idPartido = idPartido;
 	}
 
 }

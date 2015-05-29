@@ -88,13 +88,16 @@ public class AtencionDAOImpl extends GenericHBDAOImpl<Atencion> implements
 			Disjunction crit = Restrictions.disjunction();
 			for (Estado estado : estados) {
 				if (estado.equals(Estado.ATENCION)) {
-					crit.add(Restrictions.conjunction(
-							Restrictions.isNotNull("inicioAtencion"),
-							Restrictions.isNull("finAtencion")));
+					crit.add(Restrictions.conjunction(Restrictions
+							.isNotNull("inicioAtencion"), Restrictions
+							.conjunction(Restrictions.isNull("finAtencion"),
+									Restrictions.isNull("cancelacionAtencion"))));
 				} else if (estado.equals(Estado.ESPERA)) {
 					crit.add(Restrictions.conjunction(
 							Restrictions.isNull("inicioAtencion"),
-							Restrictions.isNull("finAtencion")));
+							Restrictions
+							.conjunction(Restrictions.isNull("finAtencion"),
+									Restrictions.isNull("cancelacionAtencion"))));
 				} else {
 					crit.add(Restrictions.conjunction(
 							Restrictions.isNotNull("inicioAtencion"),
@@ -106,13 +109,16 @@ public class AtencionDAOImpl extends GenericHBDAOImpl<Atencion> implements
 
 		if (null != estadoFilter) {
 			if (estadoFilter.equals(Estado.ATENCION)) {
-				criteria.add(Restrictions.conjunction(
-						Restrictions.isNotNull("inicioAtencion"),
-						Restrictions.isNull("finAtencion")));
+				criteria.add(Restrictions.conjunction(Restrictions
+						.isNotNull("inicioAtencion"), Restrictions
+						.conjunction(Restrictions.isNull("finAtencion"),
+								Restrictions.isNull("cancelacionAtencion"))));
 			} else if (estadoFilter.equals(Estado.ESPERA)) {
 				criteria.add(Restrictions.conjunction(
 						Restrictions.isNull("inicioAtencion"),
-						Restrictions.isNull("finAtencion")));
+						Restrictions
+						.conjunction(Restrictions.isNull("finAtencion"),
+								Restrictions.isNull("cancelacionAtencion"))));
 			} else {
 				criteria.add(Restrictions.conjunction(
 						Restrictions.isNotNull("inicioAtencion"),

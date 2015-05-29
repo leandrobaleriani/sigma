@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<package name="porlet" extends="default" namespace="/porlet">
+		<action name="urgencia" class="urgencia.action">
+			<result name="result">/view/porlets/urgencias/urgencias_result.jsp</result>
+			<result name="resultUsuarios">/view/porlets/urgencias/urgencias_seleccion_result.jsp</result>
+			<result name="agregarUrgencias">/view/porlets/urgencias/urgencias_form.jsp</result>
+			<result name="json" type="json"><param name="root">jsonData</param></result>
+		</action>
+		<action name="salaespera" class="salaespera.action">
+			<result name="result">/view/porlets/salaespera/sala_espera_result.jsp</result>
+			<result name="json" type="json"><param name="root">jsonData</param></result>
+		</action>
+		<action name="atencionultimas" class="atencion.action">
+			<result name="result">/view/porlets/atenciones/atenciones_ultimas_result.jsp</result>
+			<result name="json" type="json"><param name="root">jsonData</param></result>
+		</action>
+		<action name="atencionpendiente" class="atencion.action">
+			<result name="result">/view/porlets/atenciones/atenciones_pendientes_result.jsp</result>
+			<result name="json" type="json"><param name="root">jsonData</param></result>
+		</action>
+	</package> 
+
+</struts>

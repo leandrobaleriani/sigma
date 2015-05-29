@@ -18,10 +18,10 @@ public class Localidad extends BaseEntity {
 	@Column(name = "NOMBRE")
 	private String nombre;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_PROVINCIA", insertable = false, updatable = false)
-	private Provincia provincia;
-	@Column(name = "ID_PROVINCIA")
-	private Long idProvincia;
+	@JoinColumn(name = "ID_PARTIDO", insertable = false, updatable = false)
+	private Partido partido;
+	@Column(name = "ID_PARTIDO")
+	private Long idPartido;
 
 	public String getNombre() {
 		return nombre;
@@ -31,20 +31,20 @@ public class Localidad extends BaseEntity {
 		this.nombre = nombre;
 	}
 
-	public Provincia getProvincia() {
-		return provincia;
+	public Partido getPartido() {
+		return partido;
 	}
 
-	public void setProvincia(Provincia provincia) {
-		this.provincia = provincia;
+	public void setPartido(Partido partido) {
+		this.partido = partido;
 	}
 
-	public Long getIdProvincia() {
-		return idProvincia;
+	public Long getIdPartido() {
+		return idPartido;
 	}
 
-	public void setIdProvincia(Long idProvincia) {
-		this.idProvincia = idProvincia;
+	public void setIdPartido(Long idPartido) {
+		this.idPartido = idPartido;
 	}
 
 }

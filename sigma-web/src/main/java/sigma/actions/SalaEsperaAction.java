@@ -21,6 +21,8 @@ public class SalaEsperaAction extends BaseAction {
 	 */
 	private static final long serialVersionUID = 1767225656947241477L;
 
+	private static final String RESULT = "result";
+	
 	private AtencionBO atencionBO;
 	private ParametricoBO parametricoBO;
 	private Long seleccionLugarAtencion;
@@ -47,7 +49,7 @@ public class SalaEsperaAction extends BaseAction {
 		
 //		Long idLugarAtencion = lugarAtencion.getId();
 		
-		List<Atencion> atenciones = atencionBO.getAtenciones();
+		List<Atencion> atenciones = atencionBO.obtenerEnEsperaEnAtencion();
 		List<AtencionDTO> atencionesDTO = new ArrayList<AtencionDTO>();
 		if (Utils.isNotEmptyCollection(atenciones)) {
 
@@ -82,11 +84,13 @@ public class SalaEsperaAction extends BaseAction {
 						.add(new AtencionDTO(atencion.getPersona()
 								.getNombreCompleto(), atencion
 								.getTipoAtencion().getDescripcion(), atencion
-								.getInicioAtencion() == null));
+								.getInicioAtencion() == null, Utils.convertToFechaHora(atencion.getFechaRecepcion())
+								, Utils.convertToFechaHora(atencion.getInicioAtencion()), atencion.getId() + ""));
 			}
 		}
 		LinkedHashMap<String, Object> jsonResponse = createJSONResponse();
 		jsonResponse.put("data", atencionesDTO);
+		jsonResponse.put("usuariosUrgencia", atencionesDTO);
 //		jsonResponse.put("lugarAtencion", lugarAtencion.getNombre());
 		return JSON;
 	}
@@ -111,6 +115,64 @@ public class SalaEsperaAction extends BaseAction {
 		getSession().put("lugarAtencionMonitor", lugarAtencionSeleccion);
 		createCustomJSONResponse(lugarAtencionSeleccion);
 		return JSON;
+	}
+	
+	public String getSalaEspera() throws Exception {
+		
+		int enEspera = 0;
+		int enAtencion = 0;
+		
+		List<Atencion> atenciones = atencionBO.obtenerEnEsperaEnAtencion();
+		List<AtencionDTO> atencionesDTO = new ArrayList<AtencionDTO>();
+		if (Utils.isNotEmptyCollection(atenciones)) {
+
+			Collections.sort(atenciones, new Comparator<Atencion>() {
+				@Override
+				public int compare(Atencion o1, Atencion o2) {
+
+					Date inicioAtencion1 = o1.getInicioAtencion();
+					Date inicioAtencion2 = o2.getInicioAtencion();
+
+					Date recepcion1 = o1.getFechaRecepcion();
+					Date recepcion2 = o2.getFechaRecepcion();
+
+					int result = 0;
+
+					if (null == inicioAtencion1 && null == inicioAtencion2) {
+						result = recepcion1.compareTo(recepcion2);
+					} else if (null == inicioAtencion1) {
+						result = 1;
+					} else if (null == inicioAtencion2) {
+						result = -1;
+					} else {
+						result = inicioAtencion1.compareTo(inicioAtencion2);
+					}
+
+					return result;
+				}
+			});
+
+			AtencionDTO atencionDTO = null;
+			for (Atencion atencion : atenciones) {
+				atencionDTO = new AtencionDTO(atencion.getPersona()
+						.getNombreCompleto(), atencion
+						.getTipoAtencion().getDescripcion(), atencion
+						.getInicioAtencion() == null, Utils.convertToFechaHora(atencion.getFechaRecepcion())
+						, Utils.convertToFechaHora(atencion.getInicioAtencion()), atencion.getId() + "");
+				atencionesDTO
+						.add(atencionDTO);
+				if (atencionDTO.isEnEspera()) {
+					enEspera++;	
+				} else {
+					enAtencion++;
+				}
+			}
+		}
+		
+		getServletRequest().setAttribute("enEspera", enEspera);
+		getServletRequest().setAttribute("enAtencion", enAtencion);
+		getServletRequest().setAttribute("atenciones", atencionesDTO);
+		return RESULT;
 	}
 
 	public void setParametricoBO(ParametricoBO parametricoBO) {

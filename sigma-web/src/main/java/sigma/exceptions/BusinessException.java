@@ -17,6 +17,11 @@ public class BusinessException extends Exception {
 		super(msg, th);
 		this.typeError = typeError;
 	}
+	
+	public BusinessException(String msg, TypeError typeError) {
+		super(msg);
+		this.typeError = typeError;
+	}
 
 	public BusinessException(String msg, Throwable th) {
 		super(msg, th);

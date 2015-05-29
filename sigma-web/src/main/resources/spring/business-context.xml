@@ -7,6 +7,10 @@
 	<bean id="user.tx.bo" class="sigma.bo.impl.UserBOImpl">
 		<property name="userDAO" ref="user.dao" />
 	</bean>
+	
+	<bean id="urgencia.tx.bo" class="sigma.bo.impl.UrgenciaBOImpl">
+		<property name="userDAO" ref="user.dao" />
+	</bean>
 
 	<bean id="persona.tx.bo" class="sigma.bo.impl.PersonaBOImpl">
 		<property name="personaDAO" ref="persona.dao" />
@@ -14,6 +18,7 @@
 
 	<bean id="atencion.tx.bo" class="sigma.bo.impl.AtencionBOImpl">
 		<property name="atencionDAO" ref="atencion.dao" />
+		<property name="personaDAO" ref="persona.dao" />
 	</bean>
 
 	<bean id="parametrico.tx.bo" class="sigma.bo.impl.ParametricoBOImpl">
@@ -21,6 +26,7 @@
 		<property name="localidadDAO" ref="localidad.dao" />
 		<property name="obraSocialDAO" ref="obrasocial.dao" />
 		<property name="barrioDAO" ref="barrio.dao" />
+		<property name="partidoDAO" ref="partido.dao" />
 		<property name="lugarAtencionDAO" ref="lugaratencion.dao" />
 	</bean>
 

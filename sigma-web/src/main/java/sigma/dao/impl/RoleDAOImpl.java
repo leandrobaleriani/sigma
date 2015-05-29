@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import sigma.dao.RoleDAO;
 import sigma.entities.Role;
 import sigma.exceptions.DataAccessException;
-import sigma.filters.Order;
 import sigma.filters.RoleFilter;
 
 public class RoleDAOImpl extends GenericHBDAOImpl<Role> implements RoleDAO {

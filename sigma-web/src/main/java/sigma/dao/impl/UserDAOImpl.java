@@ -5,8 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Criteria;
-import org.hibernate.criterion.Disjunction;
-import org.hibernate.criterion.MatchMode;
+import org.hibernate.Hibernate;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,7 +92,13 @@ public class UserDAOImpl extends GenericHBDAOImpl<User> implements UserDAO {
 
 		try {
 			Criteria criteria = buildCriteria(filter);
-			return criteria.list();
+			List<User> users = criteria.list();
+			if (null != users) {
+				for (User user : users) {
+					Hibernate.initialize(user.getPersona());
+				}
+			}
+			return users;
 
 		} catch (Exception exc) {
 			LOGGER.error("search() - Error al realizar busqueda de Usuarios",
@@ -124,10 +129,20 @@ public class UserDAOImpl extends GenericHBDAOImpl<User> implements UserDAO {
 
 		// Filtros
 		String nroDoc = filter.getDni();
+		Boolean enUrgencia = filter.getEnUrgencia();
+		Boolean prestador = filter.getPrestador();
 		
 		if (null != nroDoc) {
 			criteria.createAlias("persona", "persona");
 			criteria.add(Restrictions.eq("persona.doc", Long.valueOf(nroDoc)));
+		}
+		
+		if (null != enUrgencia) {
+			criteria.add(Restrictions.eq("urgencia", enUrgencia));
+		}
+		
+		if (null != prestador) {
+			criteria.add(Restrictions.eq("prestador", prestador));
 		}
 
 		return criteria;

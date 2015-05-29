@@ -25,22 +25,6 @@
 
 <body style="background-color: #F9F9F9!important;background-image: none!important;">
 	<script type="text/javascript">
-		function recepcionar(id) {
-			$('#myModal').modal('show');
-		}
-
-		function cancelar() {
-			$('#myModal').modal('hide');
-		}
-
-		function nuevoEditar(id) {
-			$('#myModal2').modal('show');
-		}
-
-		function cancelarNuevoEditar() {
-			$('#myModal2').modal('hide');
-		}
-		
 
 		$(document).ready(function() {
 

@@ -8,8 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sigma.bo.AtencionBO;
+import sigma.common.Utils;
 import sigma.dao.AtencionDAO;
+import sigma.dao.PersonaDAO;
 import sigma.entities.Atencion;
+import sigma.entities.Persona;
+import sigma.entities.TipoAtencionEnum;
 import sigma.exceptions.BusinessException;
 import sigma.exceptions.DataAccessException;
 import sigma.filters.AtencionFilter;
@@ -21,19 +25,10 @@ public class AtencionBOImpl implements AtencionBO {
 	private final Logger LOGGER = LoggerFactory.getLogger(AtencionBOImpl.class);
 
 	private AtencionDAO atencionDAO;
+	private PersonaDAO personaDAO;
 
 	@Override
-	public void saveOrUpdate(Atencion atencion) throws BusinessException {
-		try {
-			atencionDAO.saveOrUpdate(atencion);
-		} catch (DataAccessException daexc) {
-			LOGGER.error("Error al guardar Atencion", daexc);
-			throw new BusinessException(daexc);
-		}
-	}
-
-	@Override
-	public Atencion getById(Long id) throws BusinessException {
+	public Atencion obtener(Long id) throws BusinessException {
 		try {
 			return atencionDAO.getById(id);
 		} catch (DataAccessException daexc) {
@@ -43,7 +38,7 @@ public class AtencionBOImpl implements AtencionBO {
 	}
 
 	@Override
-	public List<Atencion> search(AtencionFilter filter)
+	public List<Atencion> buscar(AtencionFilter filter)
 			throws BusinessException {
 		try {
 			return atencionDAO.search(filter);
@@ -54,7 +49,7 @@ public class AtencionBOImpl implements AtencionBO {
 	}
 
 	@Override
-	public List<Atencion> getAtencionesEnEspera() throws BusinessException {
+	public List<Atencion> obtenerEnEspera() throws BusinessException {
 		try {
 			AtencionFilter filter = new AtencionFilter();
 			SearchOrder searchOrder = new SearchOrder();
@@ -70,7 +65,7 @@ public class AtencionBOImpl implements AtencionBO {
 	}
 
 	@Override
-	public List<Atencion> getAtenciones() throws BusinessException {
+	public List<Atencion> obtenerEnEsperaEnAtencion() throws BusinessException {
 		try {
 			AtencionFilter filter = new AtencionFilter();
 			SearchOrder searchOrder = new SearchOrder();
@@ -122,7 +117,7 @@ public class AtencionBOImpl implements AtencionBO {
 	}
 
 	@Override
-	public List<Atencion> getAtencionesPendientes(Long idUsuario)
+	public List<Atencion> obtenerPendientesPorUsuario(Long idUsuario)
 			throws BusinessException {
 		try {
 			AtencionFilter filter = new AtencionFilter();
@@ -141,7 +136,7 @@ public class AtencionBOImpl implements AtencionBO {
 	}
 
 	@Override
-	public List<Atencion> getAtencionesUltimas(Long idUsuario)
+	public List<Atencion> obtenerUltimasAtenciones(Long idUsuario)
 			throws BusinessException {
 		try {
 			AtencionFilter filter = new AtencionFilter();
@@ -160,7 +155,7 @@ public class AtencionBOImpl implements AtencionBO {
 	}
 
 	@Override
-	public List<Atencion> getAtencionesHistorial(Long idPersona)
+	public List<Atencion> obtenerHistorial(Long idPersona)
 			throws BusinessException {
 		try {
 			AtencionFilter filter = new AtencionFilter();
@@ -169,6 +164,7 @@ public class AtencionBOImpl implements AtencionBO {
 			searchOrder.setOrden("asc");
 			filter.setSearchOrder(searchOrder);
 			filter.setIdPersona(idPersona);
+			filter.setEstado(Estado.FINALIZADO);
 			return atencionDAO.search(filter);
 		} catch (DataAccessException daexc) {
 			LOGGER.error("Error al buscar Historial de Atenciones", daexc);
@@ -176,8 +172,96 @@ public class AtencionBOImpl implements AtencionBO {
 		}
 	}
 
+	@Override
+	public List<Atencion> obtenerEnAtencion() throws BusinessException {
+		try {
+			AtencionFilter filter = new AtencionFilter();
+			SearchOrder searchOrder = new SearchOrder();
+			searchOrder.setCampo("atencion");
+			searchOrder.setOrden("asc");
+			filter.setSearchOrder(searchOrder);
+			filter.setEstado(Estado.ATENCION);
+			return atencionDAO.search(filter);
+		} catch (DataAccessException daexc) {
+			LOGGER.error("Error al buscar Atenciones Pendientes de Finalizar",
+					daexc);
+			throw new BusinessException(daexc);
+		}
+	}
+
+	@Override
+	public void recepcionarActualizar(Long idUsuario,
+			TipoAtencionEnum tipoAtencion, Persona persona, Long idLugarAtencion)
+			throws BusinessException {
+		try {
+			AtencionFilter atencionFilter = new AtencionFilter();
+			atencionFilter.setIdPersona(persona.getId());
+			List<Estado> estados = new ArrayList<AtencionFilter.Estado>();
+			estados.add(Estado.ATENCION);
+			estados.add(Estado.ESPERA);
+			atencionFilter.setEstados(estados);
+			List<Atencion> atenciones = atencionDAO.search(atencionFilter);
+
+			if (Utils.isEmptyCollection(atenciones)) {
+				Atencion atencion = new Atencion();
+				atencion.setFechaRecepcion(new Date());
+				atencion.setIdUsuarioRecepcion(idUsuario);
+				atencion.setTipoAtencion(tipoAtencion);
+				atencion.setIdPersona(persona.getId());
+				atencion.setIdLugarAtencion(idLugarAtencion);
+				atencionDAO.saveOrUpdate(atencion);
+				personaDAO.saveOrUpdate(persona);
+			} else {
+				LOGGER.warn("Error al guardar Atención");
+				throw new BusinessException(
+						"El Paciente ya se encuentra recepcionado",
+						BusinessException.TypeError.MENSAJE);
+			}
+		} catch (DataAccessException daexc) {
+			LOGGER.error("Error al guardar Atención", daexc);
+			throw new BusinessException(daexc);
+		}
+	}
+
+	@Override
+	public void recepcionarIngresar(Long idUsuario,
+			TipoAtencionEnum tipoAtencion, Persona persona, Long idLugarAtencion)
+			throws BusinessException {
+		try {
+			personaDAO.saveOrUpdate(persona);
+			Atencion atencion = new Atencion();
+			atencion.setFechaRecepcion(new Date());
+			atencion.setIdUsuarioRecepcion(idUsuario);
+			atencion.setTipoAtencion(tipoAtencion);
+			atencion.setIdPersona(persona.getId());
+			atencion.setIdLugarAtencion(idLugarAtencion);
+			atencionDAO.saveOrUpdate(atencion);
+		} catch (DataAccessException daexc) {
+			LOGGER.error("Error al guardar Atención", daexc);
+			throw new BusinessException(daexc);
+		}
+	}
+
+	@Override
+	public void finalizarMotivo(Long idAtencion, String motivo)
+			throws BusinessException {
+		try {
+			Atencion atencion = atencionDAO.getById(idAtencion);
+			atencion.setCancelacionAtencion(new Date());
+			atencion.setMotivo(motivo);
+			atencionDAO.saveOrUpdate(atencion);
+		} catch (DataAccessException daexc) {
+			LOGGER.error("Error al realizar Cancelación de Atención", daexc);
+			throw new BusinessException(daexc);
+		}
+	}
+
 	public void setAtencionDAO(AtencionDAO atencionDAO) {
 		this.atencionDAO = atencionDAO;
+	}
+
+	public void setPersonaDAO(PersonaDAO personaDAO) {
+		this.personaDAO = personaDAO;
 	}
 
 }

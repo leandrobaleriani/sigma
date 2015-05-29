@@ -1,9 +1,7 @@
-
 package sigma.actions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +9,6 @@ import sigma.bo.AtencionBO;
 import sigma.bo.ParametricoBO;
 import sigma.bo.PersonaBO;
 import sigma.common.Utils;
-import sigma.entities.Atencion;
 import sigma.entities.Barrio;
 import sigma.entities.ObraSocial;
 import sigma.entities.Persona;
@@ -49,6 +46,7 @@ public class PersonaAction extends BaseAction {
 
 	@Override
 	public String execute() throws Exception {
+		getServletRequest().setAttribute("totalResult", 0);
 		return SUCCESS;
 	}
 
@@ -61,7 +59,7 @@ public class PersonaAction extends BaseAction {
 		personaFilter.setSearchOrder(searchOrder);
 		personaFilter.setSearchPage(searchPage);
 
-		SearchResult<Persona> result = personaBO.search(personaFilter);
+		SearchResult<Persona> result = personaBO.buscarPacientes(personaFilter);
 
 		List<Persona> personas = result.getData();
 		int totalResult = result.getTotalResults();
@@ -82,7 +80,7 @@ public class PersonaAction extends BaseAction {
 
 	public String showRecepcionar() throws Exception {
 		Long idPersona = Long.valueOf(selectedItem);
-		persona = personaBO.getById(idPersona);
+		persona = personaBO.obtener(idPersona);
 		loadParametricos();
 		return RECEPCIONAR;
 	}
@@ -94,14 +92,13 @@ public class PersonaAction extends BaseAction {
 
 		if (Utils.isEmptyCollection(validaciones)) {
 			try {
-				personaBO.saveOrUpdate(persona);
-				Atencion atencion = new Atencion();
-				atencion.setFechaRecepcion(new Date());
-				atencion.setIdUsuarioRecepcion(getLoggedUser().getId());
-				atencion.setTipoAtencion(tipoAtencion);
-				atencion.setIdPersona(persona.getId());
-				atencion.setIdLugarAtencion(getLugarAtencion().getId());
-				atencionBO.saveOrUpdate(atencion);
+				if (null != persona.getId()) {
+					atencionBO.recepcionarActualizar(getLoggedUser().getId(),
+							tipoAtencion, persona, getLugarAtencion().getId());
+				} else {
+					atencionBO.recepcionarIngresar(getLoggedUser().getId(),
+							tipoAtencion, persona, getLugarAtencion().getId());
+				}
 				mensaje = getText("operacion.exito");
 				exito = Boolean.TRUE;
 			} catch (BusinessException bexc) {
@@ -120,7 +117,7 @@ public class PersonaAction extends BaseAction {
 		List<ValidationError> validaciones = validarPersona();
 		if (Utils.isEmptyCollection(validaciones)) {
 			try {
-				personaBO.saveOrUpdate(persona);
+				personaBO.ingresar(persona);
 				mensaje = getText("operacion.exito");
 				exito = Boolean.TRUE;
 			} catch (BusinessException bexc) {
@@ -183,7 +180,7 @@ public class PersonaAction extends BaseAction {
 
 	public String showEdit() throws Exception {
 		Long idPersona = Long.valueOf(selectedItem);
-		persona = personaBO.getById(idPersona);
+		persona = personaBO.obtener(idPersona);
 		loadParametricos();
 		return EDIT;
 	}
@@ -205,7 +202,7 @@ public class PersonaAction extends BaseAction {
 
 		List<Barrio> barrios = parametricoBO.getAllBarrios();
 		getServletRequest().setAttribute("lstBarrio", barrios);
-		
+
 		List<TipoAtencionEnum> lstTipoAtencion = new ArrayList<TipoAtencionEnum>();
 		lstTipoAtencion.addAll(Arrays.asList(TipoAtencionEnum.values()));
 		getServletRequest().setAttribute("lstTipoAtencion", lstTipoAtencion);

@@ -12,17 +12,17 @@ function showMsgInfo(mensaje, callback) {
 	$('#mensajeInfo').modal(modalOptions).modal("show");
 }
 
-function showMsgError(mensaje, callback) {
-	$('#mensajeErrorDetalle').html(mensaje);
+function showMsgError(mensaje) {
+	$('#mensajeErrorDetalle').html("<b><H4>" + mensaje + "</H4></b>");
 
 	$('#btnCerrarErrorDetalle').unbind("click");
-	if (callback) {
+//	if (callback) {
 		newCallback = function() {
 			callback();
 			$('#mensajeError').modal("hide");
 		}
 		$('#btnCerrarErrorDetalle').bind("click", newCallback);
-	}
+//	}
 	$('#mensajeError').modal(modalOptions).modal("show");
 }
 

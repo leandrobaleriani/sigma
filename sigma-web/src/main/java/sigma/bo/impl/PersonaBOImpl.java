@@ -18,10 +18,11 @@ public class PersonaBOImpl implements PersonaBO {
 	private PersonaDAO personaDAO;
 
 	@Override
-	public SearchResult<Persona> search(PersonaFilter filter)
+	public SearchResult<Persona> buscarPacientes(PersonaFilter filter)
 			throws BusinessException {
 
 		try {
+			filter.setPaciente(Boolean.TRUE);
 			return personaDAO.search(filter);
 		} catch (DataAccessException daexc) {
 			LOGGER.error("Error al realizar busqueda de Personas", daexc);
@@ -30,7 +31,7 @@ public class PersonaBOImpl implements PersonaBO {
 	}
 
 	@Override
-	public void saveOrUpdate(Persona persona) throws BusinessException {
+	public void ingresar(Persona persona) throws BusinessException {
 		try {
 			personaDAO.saveOrUpdate(persona);
 		} catch (DataAccessException daexc) {
@@ -40,7 +41,17 @@ public class PersonaBOImpl implements PersonaBO {
 	}
 
 	@Override
-	public Persona getById(Long id) throws BusinessException {
+	public void actualizar(Persona persona) throws BusinessException {
+		try {
+			personaDAO.saveOrUpdate(persona);
+		} catch (DataAccessException daexc) {
+			LOGGER.error("Error al guardar Persona", daexc);
+			throw new BusinessException(daexc);
+		}
+	}
+
+	@Override
+	public Persona obtener(Long id) throws BusinessException {
 		try {
 			return personaDAO.getById(id);
 		} catch (DataAccessException daexc) {

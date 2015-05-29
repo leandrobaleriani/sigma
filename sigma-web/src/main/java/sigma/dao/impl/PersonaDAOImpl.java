@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.PersistenceException;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Disjunction;
@@ -30,6 +31,13 @@ public class PersonaDAOImpl extends GenericHBDAOImpl<Persona> implements
 	private final Logger LOGGER = LoggerFactory.getLogger(PersonaDAOImpl.class);
 
 	@Override
+	public Persona getById(Long id) throws DataAccessException {
+		Persona persona = super.getById(id);
+		Hibernate.initialize(persona.getLocalidad().getPartido());
+		return persona;
+	}
+
+	@Override
 	public SearchResult<Persona> search(PersonaFilter filter)
 			throws DataAccessException {
 		SearchResult<Persona> searchResult = new SearchResult<Persona>();
@@ -50,7 +58,9 @@ public class PersonaDAOImpl extends GenericHBDAOImpl<Persona> implements
 					String order = ordenamiento.getOrden();
 
 					if (Utils.isNotEmptyString(orderBy)) {
-						criteria.createAlias("obraSocial", "obraSocial");
+						criteria.createAlias("datosMedico", "datosMedico");
+						criteria.createAlias("datosMedico.obraSocial",
+								"obraSocial");
 						criteria.createAlias("localidad", "localidad");
 						boolean asc = order.equalsIgnoreCase(SearchOrder.ASC);
 						if (asc) {
@@ -97,6 +107,7 @@ public class PersonaDAOImpl extends GenericHBDAOImpl<Persona> implements
 
 		// Filtros
 		String campoBusqueda = filter.getCampoBusqueda();
+		Boolean paciente = filter.getPaciente();
 
 		if (Utils.isNotEmptyString(campoBusqueda)) {
 			Disjunction disj = Restrictions.disjunction();
@@ -109,6 +120,10 @@ public class PersonaDAOImpl extends GenericHBDAOImpl<Persona> implements
 			disj.add(Restrictions.like("apellido", campoBusqueda,
 					MatchMode.ANYWHERE));
 			criteria.add(disj);
+		}
+
+		if (null != paciente) {
+			criteria.add(Restrictions.eq("paciente", paciente));
 		}
 
 		return criteria;

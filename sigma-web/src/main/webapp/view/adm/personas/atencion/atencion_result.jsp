@@ -19,10 +19,10 @@
 					</h3>
 				</div>
 				<div class="panel-body">
-					<div class="col-md-12 modal-footer">
-						<a href="javascript:cerrarModal();void(0);"
+					<div class="col-md-12">
+						<a href="javascript:cancelarAtencion('<s:property value="id" />');void(0);"
 							class="btn btn-danger btn-sm"><span
-							class="glyphicon glyphicon-remove-circle"></span> Finalizar</a> <a
+							class="glyphicon glyphicon-minus"></span> Ausente</a>&nbsp;&nbsp; <a
 							href="javascript:atender('<s:property value="id" />');void(0);"
 							class="btn btn-success btn-sm"><span
 							class="glyphicon glyphicon-ok-circle"></span> Atender</a>

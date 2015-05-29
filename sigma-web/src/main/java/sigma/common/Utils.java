@@ -1,6 +1,10 @@
 package sigma.common;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
+
+import org.apache.commons.lang.StringUtils;
 
 public class Utils {
 	public static boolean isEmptyString(String str) {
@@ -25,5 +29,13 @@ public class Utils {
 		} catch (Exception nfexc) {
 			return null;
 		}
+	}
+
+	public static String convertToFechaHora(Date fecha) {
+		if (null != fecha) {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+			return sdf.format(fecha);
+		}
+		return StringUtils.EMPTY;
 	}
 }

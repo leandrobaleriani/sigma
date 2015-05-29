@@ -5,29 +5,37 @@
       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-	<bean id="login.action" class="sigma.actions.LoginAction" />
+	<bean id="login.action" class="sigma.actions.LoginAction" scope="prototype" />
 
-	<bean id="home.action" class="sigma.actions.HomeAction" />
+	<bean id="home.action" class="sigma.actions.HomeAction" scope="prototype" />
 
-	<bean id="persona.action" class="sigma.actions.PersonaAction">
+	<bean id="persona.action" class="sigma.actions.PersonaAction"
+		scope="prototype">
 		<property name="paginationHelper" ref="paginator.helper" />
 		<property name="personaBO" ref="persona.tx.bo" />
 		<property name="parametricoBO" ref="parametrico.tx.bo" />
 		<property name="atencionBO" ref="atencion.tx.bo" />
 	</bean>
 
-	<bean id="salaespera.action" class="sigma.actions.SalaEsperaAction">
+	<bean id="salaespera.action" class="sigma.actions.SalaEsperaAction"
+		scope="prototype">
 		<property name="atencionBO" ref="atencion.tx.bo" />
 		<property name="parametricoBO" ref="parametrico.tx.bo" />
 	</bean>
 
-	<bean id="atencion.action" class="sigma.actions.AtencionAction">
+	<bean id="atencion.action" class="sigma.actions.AtencionAction"
+		scope="prototype">
 		<property name="atencionBO" ref="atencion.tx.bo" />
+	</bean>
+
+	<bean id="parametrico.action" class="sigma.actions.ParametricoAction"
+		scope="prototype">
 		<property name="parametricoBO" ref="parametrico.tx.bo" />
 	</bean>
 
-	<bean id="parametrico.action" class="sigma.actions.ParametricoAction">
-		<property name="parametricoBO" ref="parametrico.tx.bo" />
+	<bean id="urgencia.action" class="sigma.actions.UrgenciaAction"
+		scope="prototype">
+		<property name="urgenciaBO" ref="urgencia.tx.bo" />
 	</bean>
 
 	<bean id="paginator.helper" class="sigma.helpers.PaginationHelper"

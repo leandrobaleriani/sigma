@@ -5,7 +5,7 @@
 
 <struts>
 
-	<package name="persona" extends="json-default" namespace="/persona">
+	<package name="persona" extends="default" namespace="/persona">
 		<action name="adm" class="persona.action">
 			<result name="success">/view/adm/personas/personas_home.jsp</result>
 			<result name="result">/view/adm/personas/personas_result.jsp</result>
@@ -22,7 +22,6 @@
 			<result name="atencion">/view/adm/personas/atencion/atencion_form.jsp</result>
 			<result name="result">/view/adm/personas/atencion/atencion_result.jsp</result>
 			<result name="resultPendientes">/view/adm/personas/atencion/atencion_pendiente_result.jsp</result>
-			<result name="resultUltimas">/view/adm/personas/atencion/atencion_ultimas_result.jsp</result>
 			<result name="resultHistorial">/view/adm/personas/atencion/atencion_historial_result.jsp</result>
 			<result name="json" type="json"><param name="root">jsonData</param></result>
 		</action>

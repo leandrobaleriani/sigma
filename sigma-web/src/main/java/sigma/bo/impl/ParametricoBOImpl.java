@@ -13,21 +13,25 @@ import sigma.dao.BarrioDAO;
 import sigma.dao.LocalidadDAO;
 import sigma.dao.LugarAtencionDAO;
 import sigma.dao.ObraSocialDAO;
+import sigma.dao.PartidoDAO;
 import sigma.dao.ProvinciaDAO;
 import sigma.entities.Barrio;
 import sigma.entities.Localidad;
 import sigma.entities.LugarAtencion;
 import sigma.entities.ObraSocial;
+import sigma.entities.Partido;
 import sigma.entities.Provincia;
 import sigma.exceptions.BusinessException;
 import sigma.exceptions.DataAccessException;
 import sigma.filters.LocalidadFilter;
+import sigma.filters.PartidoFilter;
 
 public class ParametricoBOImpl implements ParametricoBO {
 
 	private final Logger LOGGER = LoggerFactory
 			.getLogger(ParametricoBOImpl.class);
 	private ProvinciaDAO provinciaDAO;
+	private PartidoDAO partidoDAO;
 	private LocalidadDAO localidadDAO;
 	private ObraSocialDAO obraSocialDAO;
 	private BarrioDAO barrioDAO;
@@ -48,19 +52,37 @@ public class ParametricoBOImpl implements ParametricoBO {
 	}
 
 	@Override
-	public List<Localidad> getLocalidadesByProvincia(Long idProvincia)
+	public List<Partido> getPartidosByProvincia(Long idProvincia)
+			throws BusinessException {
+		try {
+			PartidoFilter filter = new PartidoFilter();
+			filter.setIdProvincia(idProvincia);
+			List<Partido> partidos = partidoDAO.search(filter);
+			if (Utils.isNotEmptyCollection(partidos)) {
+				Collections.sort(partidos, new BeanComparator("nombre"));
+			}
+			return partidos;
+		} catch (DataAccessException daexc) {
+			LOGGER.error("Error al obtener Partidos de Provincia ID: "
+					+ idProvincia, daexc);
+			throw new BusinessException(daexc);
+		}
+	}
+
+	@Override
+	public List<Localidad> getLocalidadesByPartido(Long idPartido)
 			throws BusinessException {
 		try {
 			LocalidadFilter filter = new LocalidadFilter();
-			filter.setIdProvincia(idProvincia);
+			filter.setIdPartido(idPartido);
 			List<Localidad> localidades = localidadDAO.search(filter);
 			if (Utils.isNotEmptyCollection(localidades)) {
 				Collections.sort(localidades, new BeanComparator("nombre"));
 			}
 			return localidades;
 		} catch (DataAccessException daexc) {
-			LOGGER.error("Error al obtener Localidades de Provincia ID: "
-					+ idProvincia, daexc);
+			LOGGER.error("Error al obtener Localidades de Partido ID: "
+					+ idPartido, daexc);
 			throw new BusinessException(daexc);
 		}
 	}
@@ -126,6 +148,10 @@ public class ParametricoBOImpl implements ParametricoBO {
 
 	public void setLugarAtencionDAO(LugarAtencionDAO lugarAtencionDAO) {
 		this.lugarAtencionDAO = lugarAtencionDAO;
+	}
+
+	public void setPartidoDAO(PartidoDAO partidoDAO) {
+		this.partidoDAO = partidoDAO;
 	}
 
 }

@@ -25,32 +25,27 @@ updateDisplayTagLinks("contenedorAjax");
 			value="#attr.personas.nombre" /></a></b>
 	</display:column>
 	<display:column headerClass="header_column" property="fechaNacimiento"
-		title="F. NACIMIENTO" style="width: 10%;" format="{0,date,MM-dd-yyyy}" sortable="true" sortName="fechaNacimiento"/>
+		title="F. NAC." style="width: 10%;" format="{0,date,MM-dd-yyyy}" sortable="true" sortName="fechaNacimiento"/>
 	<display:column headerClass="header_column" property="sexo"
 		title="SEXO" style="width: 10%;"  sortable="true"  sortName="sexo"/>
-	<display:column headerClass="header_column" 
-		title="OBRA SOCIAL - PLAN" style="width: 15%;"  sortable="true"  sortName="obraSocial.nombre">
+<%-- 	<display:column headerClass="header_column"  --%>
+<%-- 		title="O. SOCIAL - PLAN" style="width: 15%;"  sortable="true"  sortName="datosMedico.obraSocial.nombre"> --%>
 		
-		<s:if test="#attr.personas.planObraSocial == ''" >
-		<s:property value="#attr.personas.obraSocial.nombre" /> - NA
-		</s:if>
-		<s:else>
-		<s:property value="#attr.personas.obraSocial.nombre" /> - <s:property value="#attr.personas.planObraSocial" />
-		</s:else>
-	</display:column>
+<%-- 		<s:if test="#attr.personas.datosMedico.planObraSocial == ''" > --%>
+<%-- 		<s:property value="#attr.personas.datosMedico.obraSocial.nombre" /> - NA --%>
+<%-- 		</s:if> --%>
+<%-- 		<s:else> --%>
+<%-- 		<s:property value="#attr.personas.datosMedico.obraSocial.nombre" /> - <s:property value="#attr.personas.datosMedico.planObraSocial" /> --%>
+<%-- 		</s:else> --%>
+<%-- 	</display:column> --%>
 	<display:column headerClass="header_column" 
 		title="LOCALIDAD" style="width: 10%;"  sortable="true"  sortName="localidad.nombre">
 		<s:property value="#attr.personas.localidad.nombre" />&nbsp;(<s:property value="#attr.personas.codPostal" />)
 		</display:column>
 	<display:column headerClass="header_column" title=""
-		style="width: 15%;" sortable="false">
+		style="width: 15%;" sortable="false"> 
 		<a href="javascript:recepcionarPersona('<s:property value='#attr.personas.id' />');void(0);"
 			class="btn btn-success btn-xs"><span
 			class="glyphicon glyphicon-share-alt"></span> Recepcionar</a>
-			
-<!-- 		<a href="javascript:nuevoEditar(1);void(0);" -->
-<%-- 			class="btn btn-info btn-xs"><span --%>
-<%-- 			class="glyphicon glyphicon-pencil"></span> Editar</a>	 --%>
-
 	</display:column>
 </display:table>

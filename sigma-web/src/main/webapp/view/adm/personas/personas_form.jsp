@@ -13,7 +13,12 @@
 		
 		$('#cmbProvincia').change(function(){
 			var idProvincia = $(this).val();
-			getLocalidadesByProvincia(idProvincia);
+			getPartidosByProvincia(idProvincia);
+		});
+		
+		$('#cmbPartido').change(function(){
+			var idPartido = $(this).val();
+			getLocalidadesByPartido(idPartido);
 		});
 		
 		$("input").bind('keyup', function (e) {
@@ -32,17 +37,36 @@
 	$(document).ready(function() {
 		<s:if test="%{persona.id != null}"> 
 		$("#cmbProvincia option").filter(function() {
-       	    //may want to use $.trim in here
-       	    return $(this).val() == '<s:text name="persona.localidad.idProvincia"/>'; 
+       	    return $(this).val() == '<s:text name="persona.localidad.partido.idProvincia"/>'; 
        		}).prop('selected', true);
 		$("#cmbProvincia").trigger("change");
 		</s:if>
 	});
 	
-	function getLocalidadesByProvincia(idProvincia){
+	function getPartidosByProvincia(idProvincia){
 		$.ajax
 	    ({    	
-	        url: '<c:url value="/parametrico/ajax!getLocalidadesByProvincia.action"/>?idProvincia=' + idProvincia,
+	        url: '<c:url value="/parametrico/ajax!getPartidosByProvincia.action"/>?idProvincia=' + idProvincia,
+	        dataType:  'html',
+	        async: true,
+	        success: function(resp){
+	           $("#cmbPartido").html(resp);
+	           <s:if test="%{persona.id != null}"> 
+	           $("#cmbPartido option").filter(function() {
+	       	    //may want to use $.trim in here
+	       	    return $(this).val() == '<s:text name="persona.localidad.idPartido"/>'; 
+	       		}).prop('selected', true);
+	           $("#cmbPartido").trigger("change");
+	           </s:if>
+	        }
+	    });
+	}
+	
+	
+	function getLocalidadesByPartido(idPartido){
+		$.ajax
+	    ({    	
+	        url: '<c:url value="/parametrico/ajax!getLocalidadesByPartido.action"/>?idPartido=' + idPartido,
 	        dataType:  'html',
 	        async: true,
 	        success: function(resp){
@@ -64,10 +88,8 @@
 			success : function(data) {
 				var mensaje = data.mensaje;
 				if (eval(data.exito)) {
-					showMsgInfo(data.mensaje, function() {
-						cerrarModal();
-						search();
-					});
+					cerrarModal();
+					search();
 				} else {
 					if (eval(data.validacion)) {
 						showErrors(data.mensajesValidacion);
@@ -92,10 +114,8 @@
 			success : function(data) {
 				var mensaje = data.mensaje;
 				if (eval(data.exito)) {
-					showMsgInfo(data.mensaje, function() {
-						cerrarModal();
-						search();
-					});
+					cerrarModal();
+					search();
 				} else {
 					if (eval(data.validacion)) {
 						showErrors(data.mensajesValidacion);
@@ -132,6 +152,10 @@
 				id="errorPanel" role="alert"></div>
 			<form class="form-horizontal" id="personaForm"
 				action='<c:url value="/persona/adm!save.action"/>' method="post">
+				<s:hidden cssClass="form-control" name="persona.id"
+					value="%{persona.id}" />
+				<s:hidden cssClass="form-control" name="persona.paciente"
+					value="%{persona.paciente}" />
 				<fieldset>
 					<div class="form-group">
 						<label class="col-lg-3 control-label control-label-left">DOCUMENTO:</label>
@@ -180,7 +204,8 @@
 							SOCIAL:</label>
 						<div class="col-lg-3">
 							<s:select list="#request.lstObraSocial" cssClass="form-control"
-								name="persona.datosMedico.idObraSocial" listKey="id" listValue="nombre"></s:select>
+								name="persona.datosMedico.idObraSocial" listKey="id"
+								listValue="nombre"></s:select>
 						</div>
 						<label class="col-lg-2 control-label control-label-left">PLAN:</label>
 						<div class="col-lg-3">
@@ -189,9 +214,10 @@
 						</div>
 					</div>
 					<div class="form-group" id="fnac_bloque">
-						<label class="col-lg-3 control-label control-label-left">NRO. CARNET:</label>
+						<label class="col-lg-3 control-label control-label-left">NRO.
+							CARNET:</label>
 						<div class="col-lg-3">
-						<s:textfield id="field_nroCarnet" cssClass="form-control"
+							<s:textfield id="field_nroCarnet" cssClass="form-control"
 								name="persona.datosMedico.nroCarnet" />
 						</div>
 					</div>
@@ -237,6 +263,14 @@
 						</div>
 					</div>
 					<div class="form-group">
+						<label class="col-lg-3 control-label control-label-left">PARTIDO:</label>
+						<div class="col-lg-4" id="wrapper_persona_partido">
+							<select class="form-control" id="cmbPartido">
+								<option value="">- SELECCIONE -</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
 						<label class="col-lg-3 control-label control-label-left">LOCALIDAD:</label>
 						<div class="col-lg-4" id="wrapper_persona_localidad">
 							<select class="form-control" name="persona.idLocalidad"
@@ -250,15 +284,17 @@
 								name="persona.codPostal" />
 						</div>
 					</div>
-					<br/>
-					<br/>  
-					<div class="form-group">
-						<label class="col-lg-3 control-label control-label-left">TIPO DE ANTENCIÓN:</label>
+					<s:if test="%{persona.id == null}">
+					<br /> 
+					<div class="form-group has-success">
+						<label class="col-lg-3 control-label control-label-left">TIPO
+							DE ANTENCIÓN:</label>
 						<div class="col-lg-4">
 							<s:select list="#request.lstTipoAtencion" cssClass="form-control"
-									name="tipoAtencion" listKey="name()" listValue="descripcion"></s:select>
+								name="tipoAtencion" listKey="name()" listValue="descripcion"></s:select>
 						</div>
 					</div>
+					</s:if>
 				</fieldset>
 			</form>
 
@@ -269,14 +305,15 @@
 			<a href="javascript:cerrarModal();void(0);"
 				class="btn btn-danger btn-sm"><span
 				class="glyphicon glyphicon-remove-circle"></span> Cancelar</a>
-			<s:if test="%{persona.id == null}">
-				<a href="javascript:guardarRecepcionarPersona();void(0);"
-					class="btn btn-success btn-sm"><span
-					class="glyphicon glyphicon-ok-circle"></span> Guardar y Recepcionar</a>
-			</s:if>
 			<a href="javascript:guardarPersona();void(0);"
 				class="btn btn-success btn-sm"><span
 				class="glyphicon glyphicon-ok-circle"></span> Guardar</a>
+				<s:if test="%{persona.id == null}">
+					 <a
+				href="javascript:guardarRecepcionarPersona();void(0);"
+				class="btn btn-success btn-sm"><span
+				class="glyphicon glyphicon-ok-circle"></span> Guardar y Recepcionar</a>
+				</s:if>
 		</div>
 	</div>
 

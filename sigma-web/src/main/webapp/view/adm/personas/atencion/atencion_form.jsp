@@ -33,10 +33,8 @@
 			success : function(data) {
 				var mensaje = data.mensaje;
 				if (eval(data.exito)) {
-					showMsgInfo(data.mensaje, function() {
-						cerrarModal();
-						refreshSalaEspera();
-					});
+					cerrarModal();
+					resetRequestData_atenciones();
 				} else {
 					if (eval(data.validacion)) {
 						showErrors(data.mensajesValidacion);

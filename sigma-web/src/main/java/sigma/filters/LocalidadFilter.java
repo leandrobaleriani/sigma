@@ -1,15 +1,15 @@
 package sigma.filters;
 
-public class LocalidadFilter{
+public class LocalidadFilter {
 
-	private Long idProvincia;
+	private Long idPartido;
 
-	public Long getIdProvincia() {
-		return idProvincia;
+	public Long getIdPartido() {
+		return idPartido;
 	}
 
-	public void setIdProvincia(Long idProvincia) {
-		this.idProvincia = idProvincia;
+	public void setIdPartido(Long idPartido) {
+		this.idPartido = idPartido;
 	}
 
 }

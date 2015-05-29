@@ -5,7 +5,7 @@
 
 <struts>
 
-	<package name="salaespera" extends="json-default" namespace="/salaespera">
+	<package name="salaespera" extends="default" namespace="/salaespera">
 		<action name="show" class="salaespera.action">
 			<result name="success">/view/adm/monitor/sala_espera.jsp</result>
 			<result name="json" type="json">

@@ -13,10 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.Period;
-
 import sigma.utils.SigmaUtils;
 
 @Entity
@@ -52,7 +48,7 @@ public class Persona extends BaseEntity {
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "TIPO_DOC")
 	private TipoDocEnum tipoDoc;
-	@OneToOne(fetch = FetchType.EAGER, mappedBy = "persona", cascade=CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, mappedBy = "persona", cascade = CascadeType.ALL)
 	private DatosMedico datosMedico;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ID_BARRIO", insertable = false, updatable = false)
@@ -63,7 +59,9 @@ public class Persona extends BaseEntity {
 	private String observacionBarrio;
 	@Column(name = "MAIL")
 	private String mail;
-	
+	@Column(name = "PACIENTE")
+	private boolean paciente;
+
 	public Long getDoc() {
 		return doc;
 	}
@@ -195,8 +193,16 @@ public class Persona extends BaseEntity {
 	public String getNombreCompleto() {
 		return this.nombre + " " + this.apellido;
 	}
-	
-	public int getEdad(){
+
+	public boolean isPaciente() {
+		return paciente;
+	}
+
+	public void setPaciente(boolean paciente) {
+		this.paciente = paciente;
+	}
+
+	public int getEdad() {
 		return SigmaUtils.getEdad(getFechaNacimiento());
 	}
 }

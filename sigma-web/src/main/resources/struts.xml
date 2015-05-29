@@ -16,7 +16,7 @@
 
 
 
-	<package name="default" extends="struts-default">
+	<package name="default" extends="struts-default, json-default">
 
 		<global-results>
 			<result name="errorResult">/view/error.jsp</result>
@@ -45,8 +45,8 @@
 				<param name="namespace">/</param>
 			</result>
 		</action>
-		
-		
+
+
 	</package>
 
 </struts>

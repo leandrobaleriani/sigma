@@ -5,9 +5,10 @@
 
 <struts>
 
-	<package name="parametrico" extends="json-default" namespace="/parametrico">
+	<package name="parametrico" extends="default" namespace="/parametrico">
 		<action name="ajax" class="parametrico.action">
 			<result name="opciones_localidades">/view/parametrico/opciones_localidades.jsp</result>
+			<result name="opciones_partidos">/view/parametrico/opciones_partidos.jsp</result>
 		</action>
 	</package>
 

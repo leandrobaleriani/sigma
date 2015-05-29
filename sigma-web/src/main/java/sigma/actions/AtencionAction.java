@@ -1,12 +1,10 @@
 package sigma.actions;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import sigma.bo.AtencionBO;
-import sigma.bo.ParametricoBO;
 import sigma.common.Utils;
 import sigma.entities.Atencion;
 import sigma.exceptions.BusinessException;
@@ -20,7 +18,6 @@ public class AtencionAction extends BaseAction {
 	 */
 	private static final long serialVersionUID = 1767225656947241477L;
 
-	private ParametricoBO parametricoBO;
 	private AtencionBO atencionBO;
 
 	private Atencion atencion;
@@ -30,8 +27,6 @@ public class AtencionAction extends BaseAction {
 
 	private String RESULT = "result";
 	private String ATENCION = "atencion";
-	private String RESULT_PENDIENTES = "resultPendientes";
-	private String RESULT_ULTIMAS = "resultUltimas";
 	private String RESULT_HISTORIAL = "resultHistorial";
 
 	@Override
@@ -42,7 +37,7 @@ public class AtencionAction extends BaseAction {
 
 	public String showEspera() throws Exception {
 
-		List<Atencion> atenciones = atencionBO.getAtencionesEnEspera();
+		List<Atencion> atenciones = atencionBO.obtenerEnEspera();
 
 		getServletRequest().setAttribute("atenciones", atenciones);
 
@@ -51,7 +46,7 @@ public class AtencionAction extends BaseAction {
 
 	public String showAtencion() throws Exception {
 
-		List<Atencion> atenciones = atencionBO.getAtencionesEnEspera();
+		List<Atencion> atenciones = atencionBO.obtenerEnAtencion();
 
 		getServletRequest().setAttribute("atenciones", atenciones);
 
@@ -69,28 +64,28 @@ public class AtencionAction extends BaseAction {
 	}
 
 	public String diagnosticar() throws Exception {
-		Atencion atencion = atencionBO.getById(idAtencion);
+		Atencion atencion = atencionBO.obtener(idAtencion);
 		setAtencion(atencion);
 
-		List<Atencion> atenciones = atencionBO.getAtencionesHistorial(atencion
+		List<Atencion> atenciones = atencionBO.obtenerHistorial(atencion
 				.getIdPersona());
 
 		if (null != atenciones && null != idAtencion) {
 			Iterator<Atencion> iter = atenciones.iterator();
-			while(iter.hasNext()){
+			while (iter.hasNext()) {
 				if (iter.next().getId().equals(idAtencion)) {
 					iter.remove();
 					break;
 				}
 			}
 		}
-		
+
 		getSession().put("historialAtenciones", atenciones);
 
 		return ATENCION;
 	}
-	
-	public String paginarHistorial() throws Exception{
+
+	public String paginarHistorial() throws Exception {
 		return RESULT_HISTORIAL;
 	}
 
@@ -113,6 +108,38 @@ public class AtencionAction extends BaseAction {
 		return JSON;
 	}
 
+	public String finalizarAusencia() throws Exception {
+		boolean exito = Boolean.FALSE;
+		String mensaje = "";
+		try {
+			atencionBO.finalizarMotivo(idAtencion, "AUSENCIA");
+			mensaje = getText("operacion.exito");
+			exito = Boolean.TRUE;
+		} catch (BusinessException bexc) {
+			if (bexc.getTypeError().equals(TypeError.MENSAJE)) {
+				mensaje = bexc.getMessage();
+			}
+		}
+		createJSONResponse(exito, mensaje, null);
+		return JSON;
+	}
+	
+	public String finalizarAtencion() throws Exception {
+		boolean exito = Boolean.FALSE;
+		String mensaje = "";
+		try {
+			atencionBO.finalizarMotivo(idAtencion, "CASO SIN CERRAR");
+			mensaje = getText("operacion.exito");
+			exito = Boolean.TRUE;
+		} catch (BusinessException bexc) {
+			if (bexc.getTypeError().equals(TypeError.MENSAJE)) {
+				mensaje = bexc.getMessage();
+			}
+		}
+		createJSONResponse(exito, mensaje, null);
+		return JSON;
+	}
+
 	private List<ValidationError> validarAtencion() {
 		List<ValidationError> validaciones = new ArrayList<ValidationError>();
 
@@ -125,20 +152,16 @@ public class AtencionAction extends BaseAction {
 
 	public String showAtencionesPendientes() throws Exception {
 		List<Atencion> atenciones = atencionBO
-				.getAtencionesPendientes(getLoggedUser().getId());
+				.obtenerPendientesPorUsuario(getLoggedUser().getId());
 		getServletRequest().setAttribute("atencionesPendientes", atenciones);
-		return RESULT_PENDIENTES;
+		return RESULT;
 	}
 
 	public String showAtencionesUltimas() throws Exception {
 		List<Atencion> atenciones = atencionBO
-				.getAtencionesUltimas(getLoggedUser().getId());
+				.obtenerUltimasAtenciones(getLoggedUser().getId());
 		getServletRequest().setAttribute("atencionesUltimas", atenciones);
-		return RESULT_ULTIMAS;
-	}
-
-	public void setParametricoBO(ParametricoBO parametricoBO) {
-		this.parametricoBO = parametricoBO;
+		return RESULT;
 	}
 
 	public void setAtencionBO(AtencionBO atencionBO) {

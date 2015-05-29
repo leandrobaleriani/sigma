@@ -5,7 +5,19 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
 <script type="text/javascript">
+
+	var timeoutObject;
+	var intervals = [];
+	
+	function clearIntervals(){
+		 for(var i = 0; i < intervals.length; i++){
+			 clearInterval(intervals[i]);
+		 }
+		 intervals.splice(0, intervals.length);
+	}
+
 	function showPersonas() {
+		clearIntervals();
 		$.ajax({
 			url : '<c:url value="/persona/adm.action"/>'
 		}).done(function(data) {
@@ -16,6 +28,7 @@
 	}
 	
 	function showAtenciones() {
+		clearIntervals();
 		$.ajax({
 			url : '<c:url value="/persona/atencion.action"/>'
 		}).done(function(data) {
@@ -26,6 +39,7 @@
 	}
 	
 	function showInformacion(){
+		clearIntervals();
 		$.ajax({
 			url : '<c:url value="/view/info.jsp"/>'
 		}).done(function(data) {
@@ -33,6 +47,7 @@
 			$('#modalDialogInfo').modal('show');
 		});
 	}
+	
 </script>
 
 <div class="navbar navbar-inverse"
@@ -48,7 +63,7 @@
 	</div>
 	<div class="navbar-collapse collapse navbar-responsive-collapse">
 		<ul class="nav navbar-nav">
-			<li class="active" id="menuPersona"><a href="javascript:showPersonas();"> <img alt="" src="images/paciente.png" width="22px"> Personas
+			<li class="active" id="menuPersona"><a href="javascript:showPersonas();"> <img alt="" src="images/paciente.png" width="22px"> Recepción
 			</a></li>
 		</ul>
 		<ul class="nav navbar-nav">

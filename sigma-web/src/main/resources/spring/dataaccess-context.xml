@@ -20,6 +20,10 @@
 		<property name="domainClass" value="sigma.entities.Localidad"/>
 	</bean>
 	
+	<bean id="partido.dao" class="sigma.dao.impl.PartidoDAOImpl" parent="generic.hb.dao">
+		<property name="domainClass" value="sigma.entities.Partido"/>
+	</bean>
+	
 	<bean id="provincia.dao" class="sigma.dao.impl.ProvinciaDAOImpl" parent="generic.hb.dao">
 		<property name="domainClass" value="sigma.entities.Provincia"/>
 	</bean>

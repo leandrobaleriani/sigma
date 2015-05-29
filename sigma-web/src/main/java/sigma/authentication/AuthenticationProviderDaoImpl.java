@@ -6,9 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
 import sigma.bo.UserBO;
-import sigma.dao.UserDAO;
 import sigma.exceptions.BusinessException;
-import sigma.exceptions.DataAccessException;
 
 public class AuthenticationProviderDaoImpl extends DaoAuthenticationProvider {
 
@@ -22,7 +20,7 @@ public class AuthenticationProviderDaoImpl extends DaoAuthenticationProvider {
 			return auth;
 		} catch (BadCredentialsException e) {
 			try {
-				userBO.updateFailAttempts(authentication.getName());
+				userBO.actualizarIntentosFallidos(authentication.getName());
 			} catch (BusinessException bexc) {
 				throw e;
 			}

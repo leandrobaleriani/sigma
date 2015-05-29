@@ -7,9 +7,11 @@ import sigma.results.SearchResult;
 
 public interface PersonaBO {
 
-	SearchResult<Persona> search(PersonaFilter filter) throws BusinessException;
+	SearchResult<Persona> buscarPacientes(PersonaFilter filter) throws BusinessException;
 	
-	void saveOrUpdate(Persona persona)  throws BusinessException;
+	void ingresar(Persona persona)  throws BusinessException;
 	
-	Persona getById(Long id) throws BusinessException;
+	void actualizar(Persona persona)  throws BusinessException;
+	
+	Persona obtener(Long id) throws BusinessException;
 }

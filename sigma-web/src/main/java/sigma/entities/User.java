@@ -36,10 +36,13 @@ public class User extends BaseEntity {
 	private Set<Role> roles = new HashSet<Role>(0);
 	@Column(name = "LOCKED")
 	private boolean locked;
-	@ManyToMany(fetch = FetchType.EAGER
-			, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "users_lugares_atencion", joinColumns = { @JoinColumn(name = "ID_USUARIO", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "ID_LUGAR_ATENCION", nullable = false, updatable = false) })
 	private List<LugarAtencion> lugaresAtencion;
+	@Column(name = "URGENCIA")
+	private boolean urgencia;
+	@Column(name = "PRESTADOR")
+	private boolean prestador;
 
 	public String getPassword() {
 		return password;
@@ -95,6 +98,22 @@ public class User extends BaseEntity {
 
 	public void setLugaresAtencion(List<LugarAtencion> lugaresAtencion) {
 		this.lugaresAtencion = lugaresAtencion;
+	}
+
+	public boolean isUrgencia() {
+		return urgencia;
+	}
+
+	public void setUrgencia(boolean urgencia) {
+		this.urgencia = urgencia;
+	}
+
+	public boolean isPrestador() {
+		return prestador;
+	}
+
+	public void setPrestador(boolean prestador) {
+		this.prestador = prestador;
 	}
 
 }

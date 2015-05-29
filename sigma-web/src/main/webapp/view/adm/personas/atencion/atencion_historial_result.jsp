@@ -6,9 +6,7 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
 <script>
-
 updateDisplayTagLinks("contenedorAjax_historial");
-
 </script>
 
 <display:table name="sessionScope.historialAtenciones" class="table table-bordered table-hover"
