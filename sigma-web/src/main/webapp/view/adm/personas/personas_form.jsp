@@ -6,6 +6,9 @@
 
 <script type="text/javascript">
 	$(function() {
+		
+		setTimeout(function(){ $("#field_persona_documento").focus(); }, 500);
+		
 		$('#field_fechaNac').datepicker({
 			autoclose : true,
 			language : "es"
@@ -36,11 +39,17 @@
 	
 	$(document).ready(function() {
 		<s:if test="%{persona.id != null}"> 
-		$("#cmbProvincia option").filter(function() {
-       	    return $(this).val() == '<s:text name="persona.localidad.partido.idProvincia"/>'; 
-       		}).prop('selected', true);
-		$("#cmbProvincia").trigger("change");
+			$("#cmbProvincia option").filter(function() {
+	       	    return $(this).val() == '<s:text name="persona.localidad.partido.idProvincia"/>'; 
+	       		}).prop('selected', true);
+			$("#cmbProvincia").trigger("change");
 		</s:if>
+		<s:else>
+			$("#cmbProvincia option").filter(function() {
+	       	    return $(this).val() == 1; 
+	       		}).prop('selected', true);
+			$("#cmbProvincia").trigger("change");
+		</s:else>
 	});
 	
 	function getPartidosByProvincia(idProvincia){
@@ -58,6 +67,13 @@
 	       		}).prop('selected', true);
 	           $("#cmbPartido").trigger("change");
 	           </s:if>
+	           <s:else>
+	           $("#cmbPartido option").filter(function() {
+		       	    //may want to use $.trim in here
+		       	    return $(this).val() == 105; 
+		       		}).prop('selected', true);
+		           $("#cmbPartido").trigger("change");
+				</s:else>
 	        }
 	    });
 	}
@@ -77,13 +93,27 @@
 	       	    return $(this).val() == '<s:text name="persona.idLocalidad"/>'; 
 	       		}).prop('selected', true);
 	           </s:if>
+	           <s:else>
+	           $("#cmbLocalidad option").filter(function() {
+		       	    //may want to use $.trim in here
+		       	    return $(this).val() == 861; 
+		       		}).prop('selected', true);
+	           </s:else>
 	        }
 	    });
 	}
 
 	function guardarPersona() {
 
+		 <s:if test="%{persona.id != null}"> 
+		var url = '<c:url value="/persona/adm!update.action"/>';
+		 </s:if>
+         <s:else>
+		 var url = '<c:url value="/persona/adm!save.action"/>';
+		 </s:else>
+		
 		var options = {
+			url: url,	
 			dataType : "json",
 			success : function(data) {
 				var mensaje = data.mensaje;
@@ -150,8 +180,7 @@
 		<div class="modal-body">
 			<div class="alert alert-danger" style="display: none;"
 				id="errorPanel" role="alert"></div>
-			<form class="form-horizontal" id="personaForm"
-				action='<c:url value="/persona/adm!save.action"/>' method="post">
+			<form class="form-horizontal" id="personaForm" method="post">
 				<s:hidden cssClass="form-control" name="persona.id"
 					value="%{persona.id}" />
 				<s:hidden cssClass="form-control" name="persona.paciente"
@@ -281,7 +310,7 @@
 						<label class="col-lg-1 control-label control-label-left">CP:</label>
 						<div class="col-lg-3" id="wrapper_persona_cp">
 							<s:textfield id="field_codPostal" cssClass="form-control"
-								name="persona.codPostal" />
+								name="persona.codPostal" value="2705"/>
 						</div>
 					</div>
 					<s:if test="%{persona.id == null}">

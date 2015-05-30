@@ -57,8 +57,8 @@
 		$('#atencionForm').ajaxForm(options);
 		$('#atencionForm').submit();
 	}
-	
-	function resetRequestData_atenciones(){
+
+	function resetRequestData_atenciones() {
 		clearInterval(interval_atenciones);
 		var index = intervals.indexOf(interval_atenciones);
 		intervals.splice(index, 1);
@@ -94,10 +94,12 @@
 			url : '<c:url value="/persona/atencion!diagnosticar.action"/>',
 			target : '#modalDialogContainer_atencion',
 			success : function() {
-				$('#modalDialogContainer_atencion').modal(modalOptions).modal("show");
-				$('#modalDialogContainer_atencion').on('shown.bs.modal', function(e) {
-					$("#nroDocumento").focus();
-				});
+				$('#modalDialogContainer_atencion').modal(modalOptions).modal(
+						"show");
+				$('#modalDialogContainer_atencion').on('shown.bs.modal',
+						function(e) {
+							$("#nroDocumento").focus();
+						});
 			}
 		};
 		$('#atencionForm').ajaxForm(options);
@@ -107,6 +109,10 @@
 	function cerrarModal() {
 		$('#modalDialogContainer_atencion').modal('hide');
 		$('#modalDialogContainer_atencion').html("");
+	}
+	
+	function imprimirPlanilla(){
+		$('#modalDialogContainer_planilla').modal(modalOptions).modal("show");
 	}
 </script>
 
@@ -119,7 +125,15 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-4">
-			<%@include file="../../../porlets/atenciones/atenciones_pendientes.jsp"%>
+
+			<a href="javascript:imprimirPlanilla();void(0);" class="btn btn-primary btn-sm">
+				<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;IMPRIMIR
+				PLANILLA 
+			</a>
+			<br /> <br />
+
+			<%@include
+				file="../../../porlets/atenciones/atenciones_pendientes.jsp"%>
 
 			<%@include file="../../../porlets/atenciones/atenciones_ultimas.jsp"%>
 
@@ -128,5 +142,10 @@
 	</div>
 </div>
 
-<div class="modal fade bs-example-modal-lg" id="modalDialogContainer_atencion">
-</div>
+<div class="modal fade bs-example-modal-lg"
+	id="modalDialogContainer_atencion"></div>
+	
+	<div class="modal fade bs-example-modal-lg"
+	id="modalDialogContainer_planilla">
+	<%@include file="atencion_impresion_planilla.jsp"%>
+	</div>

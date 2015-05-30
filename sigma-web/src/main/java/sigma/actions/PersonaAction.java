@@ -117,7 +117,28 @@ public class PersonaAction extends BaseAction {
 		List<ValidationError> validaciones = validarPersona();
 		if (Utils.isEmptyCollection(validaciones)) {
 			try {
+				persona.setPaciente(Boolean.TRUE);
 				personaBO.ingresar(persona);
+				mensaje = getText("operacion.exito");
+				exito = Boolean.TRUE;
+			} catch (BusinessException bexc) {
+				if (bexc.getTypeError().equals(TypeError.MENSAJE)) {
+					mensaje = bexc.getMessage();
+				}
+			}
+		}
+		createJSONResponse(exito, mensaje, validaciones);
+		return JSON;
+	}
+	
+	
+	public String update() throws Exception {
+		boolean exito = Boolean.FALSE;
+		String mensaje = "";
+		List<ValidationError> validaciones = validarPersona();
+		if (Utils.isEmptyCollection(validaciones)) {
+			try {
+				personaBO.actualizar(persona);
 				mensaje = getText("operacion.exito");
 				exito = Boolean.TRUE;
 			} catch (BusinessException bexc) {
