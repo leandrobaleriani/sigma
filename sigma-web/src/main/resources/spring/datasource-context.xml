@@ -42,7 +42,7 @@
 
 	<!-- Data Source - Context.xml Tomcat -->
 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-		<property name="jndiName" value="java:comp/env/jdbc/AteneaDB" />
+		<property name="jndiName" value="java:comp/env/jdbc/SigmaDB" />
 	</bean>
 
 	<!-- Hibernate session factory -->

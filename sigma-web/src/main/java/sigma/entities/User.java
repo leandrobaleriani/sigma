@@ -41,8 +41,6 @@ public class User extends BaseEntity {
 	private List<LugarAtencion> lugaresAtencion;
 	@Column(name = "URGENCIA")
 	private boolean urgencia;
-	@Column(name = "PRESTADOR")
-	private boolean prestador;
 
 	public String getPassword() {
 		return password;
@@ -106,14 +104,6 @@ public class User extends BaseEntity {
 
 	public void setUrgencia(boolean urgencia) {
 		this.urgencia = urgencia;
-	}
-
-	public boolean isPrestador() {
-		return prestador;
-	}
-
-	public void setPrestador(boolean prestador) {
-		this.prestador = prestador;
 	}
 
 }

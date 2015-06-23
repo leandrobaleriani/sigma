@@ -6,24 +6,31 @@
 <struts>
 
 	<package name="persona" extends="default" namespace="/persona">
-		<action name="adm" class="persona.action">
+		<action name="recepcion" class="persona.action">
 			<result name="success">/view/adm/personas/personas_home.jsp</result>
 			<result name="result">/view/adm/personas/personas_result.jsp</result>
 			<result name="new">/view/adm/personas/personas_form.jsp</result>
 			<result name="edit">/view/adm/personas/personas_form.jsp</result>
-			<result name="json" type="json"><param name="root">jsonData</param></result>
-		</action>
-		<action name="recepcionar" class="persona.action">
-			<result name="recepcionar">/view/adm/personas/recepcion/recepcionar_form.jsp</result>
-			<result name="json" type="json"><param name="root">jsonData</param></result>
+			<result name="recepcionar">/view/adm/personas/recepcion/recepcionar_form.jsp
+			</result>
+			<result name="json" type="json">
+				<param name="root">jsonData</param>
+			</result>
 		</action>
 		<action name="atencion" class="atencion.action">
-			<result name="success">/view/adm/personas/atencion/atencion_home.jsp</result>
-			<result name="atencion">/view/adm/personas/atencion/atencion_form.jsp</result>
-			<result name="result">/view/adm/personas/atencion/atencion_result.jsp</result>
-			<result name="resultPendientes">/view/adm/personas/atencion/atencion_pendiente_result.jsp</result>
-			<result name="resultHistorial">/view/adm/personas/atencion/atencion_historial_result.jsp</result>
-			<result name="json" type="json"><param name="root">jsonData</param></result>
+			<result name="success">/view/adm/personas/atencion/atencion_home.jsp
+			</result>
+			<result name="atencion">/view/adm/personas/atencion/atencion_form.jsp
+			</result>
+			<result name="result">/view/adm/personas/atencion/atencion_result.jsp
+			</result>
+			<result name="resultPendientes">/view/adm/personas/atencion/atencion_pendiente_result.jsp
+			</result>
+			<result name="resultHistorial">/view/adm/personas/atencion/atencion_historial_result.jsp
+			</result>
+			<result name="json" type="json">
+				<param name="root">jsonData</param>
+			</result>
 		</action>
 	</package>
 

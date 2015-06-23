@@ -38,6 +38,20 @@ public class PersonaDAOImpl extends GenericHBDAOImpl<Persona> implements
 	}
 
 	@Override
+	public void saveOrUpdate(Persona e) throws DataAccessException {
+		try {
+			if (null != e.getDatosMedico()) {
+				getSession().saveOrUpdate(e.getDatosMedico());
+			}
+			super.saveOrUpdate(e);
+		} catch (HibernateException hexc) {
+			LOGGER.error("search() - Error al realizar busqueda de Usuarios",
+					hexc);
+			throw new PersistenceException(hexc);
+		}
+	}
+
+	@Override
 	public SearchResult<Persona> search(PersonaFilter filter)
 			throws DataAccessException {
 		SearchResult<Persona> searchResult = new SearchResult<Persona>();
@@ -58,25 +72,12 @@ public class PersonaDAOImpl extends GenericHBDAOImpl<Persona> implements
 					String order = ordenamiento.getOrden();
 
 					if (Utils.isNotEmptyString(orderBy)) {
-						criteria.createAlias("datosMedico", "datosMedico");
-						criteria.createAlias("datosMedico.obraSocial",
-								"obraSocial");
 						criteria.createAlias("localidad", "localidad");
 						boolean asc = order.equalsIgnoreCase(SearchOrder.ASC);
 						if (asc) {
-							if (orderBy.equals("nombreApellido")) {
-								criteria.addOrder(Order.asc("apellido"));
-								criteria.addOrder(Order.asc("nombre"));
-							} else {
-								criteria.addOrder(Order.asc(orderBy));
-							}
+							criteria.addOrder(Order.asc(orderBy));
 						} else {
-							if (orderBy.equals("nombreApellido")) {
-								criteria.addOrder(Order.desc("apellido"));
-								criteria.addOrder(Order.desc("nombre"));
-							} else {
-								criteria.addOrder(Order.desc(orderBy));
-							}
+							criteria.addOrder(Order.desc(orderBy));
 						}
 					}
 				}
@@ -107,23 +108,16 @@ public class PersonaDAOImpl extends GenericHBDAOImpl<Persona> implements
 
 		// Filtros
 		String campoBusqueda = filter.getCampoBusqueda();
-		Boolean paciente = filter.getPaciente();
 
 		if (Utils.isNotEmptyString(campoBusqueda)) {
 			Disjunction disj = Restrictions.disjunction();
 			Integer dni = Utils.convertStringToInteger(campoBusqueda);
 			if (null != dni) {
-				disj.add(Restrictions.eq("dni", dni.longValue()));
+				disj.add(Restrictions.eq("doc", dni.longValue()));
 			}
-			disj.add(Restrictions.like("nombre", campoBusqueda,
-					MatchMode.ANYWHERE));
-			disj.add(Restrictions.like("apellido", campoBusqueda,
+			disj.add(Restrictions.like("nombreCompleto", campoBusqueda,
 					MatchMode.ANYWHERE));
 			criteria.add(disj);
-		}
-
-		if (null != paciente) {
-			criteria.add(Restrictions.eq("paciente", paciente));
 		}
 
 		return criteria;

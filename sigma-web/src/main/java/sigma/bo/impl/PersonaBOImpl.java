@@ -22,7 +22,6 @@ public class PersonaBOImpl implements PersonaBO {
 			throws BusinessException {
 
 		try {
-			filter.setPaciente(Boolean.TRUE);
 			return personaDAO.search(filter);
 		} catch (DataAccessException daexc) {
 			LOGGER.error("Error al realizar busqueda de Personas", daexc);
@@ -33,6 +32,10 @@ public class PersonaBOImpl implements PersonaBO {
 	@Override
 	public void ingresar(Persona persona) throws BusinessException {
 		try {
+			if (null == persona.getDatosMedico().getIdObraSocial()) {
+				persona.getDatosMedico().setNroCarnet(null);
+				persona.getDatosMedico().setPlanObraSocial(null);
+			} 
 			personaDAO.saveOrUpdate(persona);
 		} catch (DataAccessException daexc) {
 			LOGGER.error("Error al guardar Persona", daexc);
@@ -43,6 +46,10 @@ public class PersonaBOImpl implements PersonaBO {
 	@Override
 	public void actualizar(Persona persona) throws BusinessException {
 		try {
+			if (null == persona.getDatosMedico().getIdObraSocial()) {
+				persona.getDatosMedico().setNroCarnet(null);
+				persona.getDatosMedico().setPlanObraSocial(null);
+			} 
 			personaDAO.saveOrUpdate(persona);
 		} catch (DataAccessException daexc) {
 			LOGGER.error("Error al guardar Persona", daexc);

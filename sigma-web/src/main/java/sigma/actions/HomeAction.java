@@ -2,6 +2,8 @@ package sigma.actions;
 
 import java.util.List;
 
+import sigma.authentication.entities.AteneaUser;
+import sigma.authentication.entities.AtheneaRole;
 import sigma.entities.LugarAtencion;
 
 public class HomeAction extends BaseAction {
@@ -14,18 +16,11 @@ public class HomeAction extends BaseAction {
 
 	@Override
 	public String execute() throws Exception {
-		String loggedUser = getLoggedUser().getNombreCompleto();
-		getSession().put("loggedUser", loggedUser);
-		List<LugarAtencion> lugaresAtencion = getLoggedUser()
-				.getLugaresAtencion();
-		if (null != seleccionLugarAtencion) {
-			for (LugarAtencion lugarAtencion : lugaresAtencion) {
-				if (lugarAtencion.getId().equals(seleccionLugarAtencion)) {
-					setLugarAtencion(lugarAtencion);
-					break;
-				}
-			}
-		} else {
+
+		AteneaUser user = getLoggedUser();
+		if (null != user) {
+			getSession().put("loggedUser", user);
+			List<LugarAtencion> lugaresAtencion = user.getLugaresAtencion();
 			setLugarAtencion(lugaresAtencion.get(0));
 		}
 		return SUCCESS;

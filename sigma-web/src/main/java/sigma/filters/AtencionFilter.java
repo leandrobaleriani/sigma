@@ -1,5 +1,6 @@
 package sigma.filters;
 
+import java.util.Date;
 import java.util.List;
 
 public class AtencionFilter extends BaseFilter {
@@ -14,6 +15,8 @@ public class AtencionFilter extends BaseFilter {
 	private Long idUsuarioAtencion;
 	private Integer maxResults;
 	private Long idPersona;
+	private Date desde;
+	private Date hasta;
 
 	public List<Estado> getEstados() {
 		return estados;
@@ -61,6 +64,22 @@ public class AtencionFilter extends BaseFilter {
 
 	public void setIdPersona(Long idPersona) {
 		this.idPersona = idPersona;
+	}
+
+	public Date getDesde() {
+		return desde;
+	}
+
+	public void setDesde(Date desde) {
+		this.desde = desde;
+	}
+
+	public Date getHasta() {
+		return hasta;
+	}
+
+	public void setHasta(Date hasta) {
+		this.hasta = hasta;
 	}
 
 }

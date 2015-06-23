@@ -111,9 +111,26 @@
 		$('#modalDialogContainer_atencion').html("");
 	}
 	
-	function imprimirPlanilla(){
-		$('#modalDialogContainer_planilla').modal(modalOptions).modal("show");
+	function cerrarModal_planilla(){
+		$('#modalDialogContainer_planilla').modal('hide');
+		$('#modalDialogContainer_planilla').html("");
 	}
+	
+	function showFechaPlanilla(){
+		var options = {
+				url : '<c:url value="/reportes/atencion!showImprimirPlanilla.action"/>',
+				target : '#modalDialogContainer_planilla',
+				success : function() {
+					$('#modalDialogContainer_planilla').modal(modalOptions).modal(
+							"show");
+				}
+			};
+			$('#atencionForm').ajaxForm(options);
+			$('#atencionForm').submit();
+	}
+	
+
+	
 </script>
 
 <br />
@@ -126,7 +143,7 @@
 	<div class="row">
 		<div class="col-md-4">
 
-			<a href="javascript:imprimirPlanilla();void(0);" class="btn btn-primary btn-sm">
+			<a href="javascript:showFechaPlanilla();void(0);" class="btn btn-primary btn-sm">
 				<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;IMPRIMIR
 				PLANILLA 
 			</a>
@@ -147,5 +164,4 @@
 	
 	<div class="modal fade bs-example-modal-lg"
 	id="modalDialogContainer_planilla">
-	<%@include file="atencion_impresion_planilla.jsp"%>
 	</div>

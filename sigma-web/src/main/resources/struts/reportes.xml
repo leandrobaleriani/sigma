@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<package name="reportes" extends="default" namespace="/reportes">
+		<action name="atencion" class="reporte.action">
+			<result name="showPlanilla">/view/adm/personas/atencion/atencion_impresion_planilla.jsp</result>
+			<result name="planilla" type="jasper">
+				<param name="location">/reportes/planilla.jasper</param>
+				<param name="dataSource">dataSource</param>
+				<param name="format">PDF</param>
+			</result>
+			<result name="cabo" type="jasper">
+				<param name="location">/reportes/cabo.jasper</param>
+				<param name="dataSource">dataSource</param>
+				<param name="reportParameters">parameters</param>
+				<param name="format">PDF</param>
+			</result>
+		</action>
+	</package>
+
+</struts>

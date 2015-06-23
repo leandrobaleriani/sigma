@@ -15,7 +15,13 @@ public class AteneaUser extends User {
 	private String nombreCompleto;
 	private Long id;
 	private List<AtheneaRole> roles;
+	
 	private List<LugarAtencion> lugaresAtencion;
+
+	private boolean admin;
+	private boolean medico;
+	private boolean recepcionista;
+	private boolean directivo;
 
 	public AteneaUser(String username, String password, boolean enabled,
 			boolean accountNonLocked, List<AtheneaRole> roles,
@@ -25,6 +31,21 @@ public class AteneaUser extends User {
 		this.nombreCompleto = nombreCompleto;
 		this.id = id;
 		this.lugaresAtencion = lugaresAtencion;
+
+		for (AtheneaRole role : roles) {
+			if (role.getCodigo().equals("ROL_ADM")) {
+				this.admin = Boolean.TRUE;
+			}
+			if (role.getCodigo().equals("ROL_REC")  || this.admin) {
+				this.recepcionista = Boolean.TRUE;
+			}
+			if (role.getCodigo().equals("ROL_MED")  || this.admin) {
+				this.medico = Boolean.TRUE;
+			}
+			if (role.getCodigo().equals("ROL_DIR")  || this.admin) {
+				this.directivo = Boolean.TRUE;
+			}
+		}
 	}
 
 	public List<AtheneaRole> getRoles() {
@@ -41,6 +62,22 @@ public class AteneaUser extends User {
 
 	public List<LugarAtencion> getLugaresAtencion() {
 		return lugaresAtencion;
+	}
+
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public boolean isMedico() {
+		return medico;
+	}
+
+	public boolean isRecepcionista() {
+		return recepcionista;
+	}
+
+	public boolean isDirectivo() {
+		return directivo;
 	}
 
 }

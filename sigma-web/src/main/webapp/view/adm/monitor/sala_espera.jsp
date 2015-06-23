@@ -13,10 +13,15 @@
 
 <link rel="stylesheet" href="../css/bootstrap.css" media="screen">
 <link rel="stylesheet" href="../css/global.css">
+<link rel="stylesheet" href="../css/marquee.css">
 
 
 <body scroll="no">
-<style>
+	<style>
+span.tab {
+	padding: 0 80px; /* Or desired space*/
+}
+
 .column_middle_grid1 {
 	background: #0E93D4;
 	margin: .4rem;
@@ -25,7 +30,7 @@
 }
 
 .titulo {
-font-size: 60px!important;
+	font-size: 60px !important;
 }
 
 .column_middle_grid3 {
@@ -38,7 +43,6 @@ font-size: 60px!important;
 	padding-left: 20px;
 	font-size: 18px;
 }
-
 
 .profile_picture {
 	position: relative;
@@ -90,134 +94,186 @@ h1 {
 	margin-top: 20px;
 	letter-spacing: .3rem;
 }
-
 </style>
 <body>
 	<script>
-	
-	$(document).ready(function(){
-		init();loadSalaEspera();
-	});
-	
-	var currentItem = 1;
-	var totalItems = 0;
-	var currentList = null;
-	
-	function loadSalaEspera() {
-		var options = {
-			dataType : "json",
-			success : function(data) 
-			{
-				var refrescar = false;
-				var jsonData = data.data;
-				
-				if( currentList == null )
-				{
-					refrescar = true;
-					currentList = jsonData;
-				} else 
-				{
-					refrescar = JSON.stringify(currentList) != JSON.stringify(jsonData);
-					if ( refrescar )
-					{
-						currentList = jsonData;
+		$(document).ready(function() {
+			init();
+			loadSalaEspera();
+		});
+
+		var currentItem = 1;
+		var totalItems = 0;
+		var currentData = null;
+		var currentDataUrg = null;
+
+		function loadSalaEspera() {
+			var options = {
+				dataType : "json",
+				success : function(data) {
+					var refrescar = false;
+					var refrescarUrg = false;
+					var pacientes = data.data;
+					var urgencias = data.urgencias;
+					var inicio = false;
+
+					if (currentData == null) {
+						inicio = true;
+						refrescar = true;
+						currentData = pacientes;
+					} else {
+						refrescar = JSON.stringify(currentData) != JSON
+								.stringify(pacientes);
+						if (refrescar) {
+							currentData = pacientes;
+						}
 					}
-				}
-				
-				var enUrgencia = false; 
-				
-				if(refrescar)
-				{
-					$("[id^='espera_']").each(function( index ) {
-						$( this ).remove();
-					});
-					$.each( data.data, function( i, val )
-					{
-						var cssStyle = "";
-						var estado = "";
-						if(eval(val.enEspera)){
-							cssStyle = "column_middle_grid1";
-							estado = "En Espera";
+
+					if (urgencias == "") {
+						currentDataUrg = "";
+						$("#urgencias").html("");
+						$("#label_urgencia").hide();
+					} else {
+						if (currentDataUrg == null) {
+							refrescarUrg = true;
+							currentDataUrg = urgencias;
 						} else {
-							cssStyle = "column_middle_grid2";
-							estado = "En Atención";
+							refrescarUrg = JSON.stringify(currentDataUrg) != JSON
+									.stringify(urgencias);
+							if (refrescarUrg) {
+								currentDataUrg = urgencias;
+							}
+						}
+					}
+
+					if (refrescarUrg) {
+						$("#urgencias").html("");
+						$.each(data.urgencias,
+										function(i, val) {
+											var atencion = new Urgencia(val);
+											$("#urgencias").append(atencion.getHTML());
+										});
+						$("#label_urgencia").show();
+					}
+
+					if (refrescar) {
+						if(!inicio){
+							document.getElementById('multiaudio5').play();
 						}
 						
-						var options = {};
-						$("#tablero").append('<div id="espera_'+ i +'" class="' + cssStyle + '" style="display: hidden;"><table width="100%"><tr><td colspan="2">' + estado + '</td></tr><tr><td width="70%" align="left"><h2>::: ' + val.nombre +'</h2></td><td width="30%"><h3>' + val.tipoAtencion +'</h3></td></tr></table></div>');
-						$("#espera_" + i).hide();
-					});
-					currentItem = 0;
-					totalItems = data.data.length;
-					if ( totalItems > 0 )
-					{
-						$("#espera_" + currentItem).show( "fold", options, 500, function(){callback();});
+						$("[id^='espera_']").each(function(index) {
+							$(this).remove();
+						});
+						$
+								.each(
+										data.data,
+										function(i, val) {
+											var atencion = new Atencion(val.nombre, eval(val.enEspera), val.tipoAtencion, i);
+											$("#tablero").append(atencion.getHTML());
+											$("#espera_" + i).hide();
+										});
+						currentItem = 0;
+						totalItems = data.data.length;
+						if (totalItems > 0) {
+							$("#espera_" + currentItem).show("fold", options,
+									500, function() {
+										callback();
+									});
+						}
 					}
-				}
-				
-				if ( enUrgencia ) 
-				{
-					$("[id^='espera_']").each(function( index ) {
-						$( this ).addClass("column_middle_grid3");
-					});
-					$("#label_urgencia").show();
-				}
-					
-				setTimeout(function(){ 
-					loadSalaEspera(); 
+
+					setTimeout(function() {
+						loadSalaEspera();
 					}, 10000);
-			}
+				}
 			};
-			$('#salaEsperaForm').ajaxForm( options );
+			$('#salaEsperaForm').ajaxForm(options);
 			$('#salaEsperaForm').submit();
 		}
-		
-		function callback()
-		{
+
+		function callback() {
 			currentItem++;
-			if(currentItem < totalItems){
-				$("#espera_" + currentItem).show( "fold", {}, 500, function(){callback();});
-			} else if(currentItem == totalItems){
-				$("#espera_" + currentItem).show( "fold", {}, 500);
+			if (currentItem < totalItems) {
+				$("#espera_" + currentItem).show("fold", {}, 500, function() {
+					callback();
+				});
+			} else if (currentItem == totalItems) {
+				$("#espera_" + currentItem).show("fold", {}, 500);
 			}
 		}
-		
+
 		var videoPlaying = 0;
-		var videos = ["video2.webm", "video3.webm"];
+		var videos = [ "video7.webm", "video6.webm", "video5.webm", "video4.webm", "video3.webm", "video2.webm" ];
 		function init() {
 
 			var vid = document.getElementById("bgvid");
 			vid.volume = 0.9;
-// 			vid.volume = 0.0;
+// 						vid.volume = 0.0;
 			vid.src = '<c:url value="/videos/' + videos[videoPlaying] + '"/>';
 			vid.load();
 			vid.play();
-			vid.addEventListener('ended', function() {
-				videoPlaying++;
-				if(videoPlaying == videos.length){
-					videoPlaying = 0;
-				}
-				vid.src = '<c:url value="/videos/' + videos[videoPlaying] + '"/>';
-				vid.load();
-				vid.play();
-			});
-
+			vid
+					.addEventListener(
+							'ended',
+							function() {
+								videoPlaying++;
+								if (videoPlaying == videos.length) {
+									videoPlaying = 0;
+								}
+								vid.src = '<c:url value="/videos/' + videos[videoPlaying] + '"/>';
+								vid.load();
+								vid.play();
+							});
+		}
+		
+		
+		function Atencion(nombre, enEspera, tipoAtencion, index){
+			this.nombre = nombre;
+			this.estado = (enEspera) ? "En Espera" : "En Atención";
+			this.tipoAtencion = tipoAtencion;
+			this.index = index;
+			this.cssEstado = (enEspera) ? "column_middle_grid1" : "column_middle_grid2";
+			this.getHTML = function () {
+				return '<div id="espera_'+ this.index +'" class="' + this.cssEstado + '" style="display: hidden;"><table width="100%"><tr><td colspan="2">'
+				+ this.estado
+				+ '</td></tr><tr><td width="70%" align="left"><h2>:: '
+				+ this.nombre
+				+ '</h2></td><td width="30%"><h3>'
+				+ this.tipoAtencion
+				+ '</h3></td></tr></table></div>';
+		    }
+		}
+		
+		
+		function Urgencia(nombre){
+			this.nombre = nombre;
+			this.getHTML = function(){
+				var url = '<c:url value="/images/emergencia.png"/>';
+				return '<span class="tab"></span><img alt="" height="22px" hspace="5" src="' + url +'">' + this.nombre;
+			}
 		}
 		
 	</script>
+	
+	<audio id="multiaudio5" src="<c:url value="/sounds/alarm.wav"/>" preload="auto"></audio>
 
-<form action='<c:url value="/salaespera/show!showSalaEspera.action"/>' id="salaEsperaForm"></form>
-	<video
-		poster=""
-		id="bgvid"> <source id="srcVideo" type="video/webm"></video>
+	<form action='<c:url value="/salaespera/show!showSalaEspera.action"/>'
+		id="salaEsperaForm"></form>
+	<video poster="" id="bgvid"> <source id="srcVideo"
+		type="video/webm"></video>
 
 	<div id="tablero">
 		<h1 class="titulo">Guardia M&eacute;dica</h1>
-		<h1 id="lugarAtencion"></h1>
-		<div id="seleccionarLugarTrabajo" class="row"></div>
-		<hr/>
-		<h1 style="color: red!important;display:none;" id="label_urgencia">Urgencia</h1>
+		<div style="color: red !important; display: none;" id="label_urgencia">
+			<div class="marquee">
+			<h1><b>EN URGENCIA</b></h1>
+				<h1>
+					<marquee id="urgencias"></marquee>
+				</h1>
+			</div>
+		</div>
+		<hr />
 	</div>
-	
+
 </body>
 </html>

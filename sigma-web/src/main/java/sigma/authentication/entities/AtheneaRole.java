@@ -8,13 +8,9 @@ public class AtheneaRole implements
 	 */
 	private static final long serialVersionUID = 849240057973216002L;
 	private String codigo;
-	private String descripcion;
-	private String aplicacion;
 
-	public AtheneaRole(String codigo, String descripcion, String aplicacion) {
+	public AtheneaRole(String codigo) {
 		this.codigo = codigo;
-		this.descripcion = descripcion;
-		this.aplicacion = aplicacion;
 	}
 
 	public String getCodigo() {
@@ -23,22 +19,6 @@ public class AtheneaRole implements
 
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
-	}
-
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
-	public String getAplicacion() {
-		return aplicacion;
-	}
-
-	public void setAplicacion(String aplicacion) {
-		this.aplicacion = aplicacion;
 	}
 
 	@Override

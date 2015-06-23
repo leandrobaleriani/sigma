@@ -19,6 +19,7 @@
 	<bean id="atencion.tx.bo" class="sigma.bo.impl.AtencionBOImpl">
 		<property name="atencionDAO" ref="atencion.dao" />
 		<property name="personaDAO" ref="persona.dao" />
+		<property name="userDAO" ref="user.dao" />
 	</bean>
 
 	<bean id="parametrico.tx.bo" class="sigma.bo.impl.ParametricoBOImpl">

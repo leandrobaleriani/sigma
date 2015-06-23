@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import sigma.authentication.entities.AteneaUser;
@@ -54,6 +55,12 @@ public class BaseAction extends ActionSupport implements ServletRequestAware,
 	}
 
 	protected AteneaUser getLoggedUser() {
+		
+		if (SecurityContextHolder.getContext()
+				.getAuthentication() instanceof AnonymousAuthenticationToken) {
+			return null;
+		}
+		
 		return (AteneaUser) SecurityContextHolder.getContext()
 				.getAuthentication().getPrincipal();
 	}

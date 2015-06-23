@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<package name="dashboard" extends="default" namespace="/dashboard">
+		<action name="show" class="dashboard.action">
+			<result name="success">/view/adm/dashboard/dashboard_home.jsp</result>
+			<result name="json" type="json">
+				<param name="root">jsonData</param>
+			</result>
+		</action>
+	</package>
+
+</struts>

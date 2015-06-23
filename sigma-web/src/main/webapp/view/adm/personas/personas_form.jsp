@@ -105,13 +105,7 @@
 
 	function guardarPersona() {
 
-		 <s:if test="%{persona.id != null}"> 
-		var url = '<c:url value="/persona/adm!update.action"/>';
-		 </s:if>
-         <s:else>
-		 var url = '<c:url value="/persona/adm!save.action"/>';
-		 </s:else>
-		
+		var url = '<c:url value="/persona/recepcion!save.action"/>';
 		var options = {
 			url: url,	
 			dataType : "json",
@@ -136,7 +130,7 @@
 	
 	function guardarRecepcionarPersona() {
 
-		var url = '<c:url value="/persona/adm!recepcionar.action"/>';
+		var url = '<c:url value="/persona/recepcion!recepcionar.action"/>';
 		
 		var options = {
 			url : url,	
@@ -183,8 +177,8 @@
 			<form class="form-horizontal" id="personaForm" method="post">
 				<s:hidden cssClass="form-control" name="persona.id"
 					value="%{persona.id}" />
-				<s:hidden cssClass="form-control" name="persona.paciente"
-					value="%{persona.paciente}" />
+					<s:hidden cssClass="form-control" name="persona.datosMedico.id"
+					value="%{persona.datosMedico.id}" />
 				<fieldset>
 					<div class="form-group">
 						<label class="col-lg-3 control-label control-label-left">DOCUMENTO:</label>
@@ -222,7 +216,7 @@
 						<label class="col-lg-2 control-label control-label-left">SEXO:</label>
 						<div class="col-lg-3">
 							<s:select list="#request.lstSexo" cssClass="form-control"
-								name="persona.sexo" listKey="name()" listValue="descripcion"></s:select>
+								name="persona.sexo"></s:select>
 						</div>
 					</div>
 
@@ -234,7 +228,7 @@
 						<div class="col-lg-3">
 							<s:select list="#request.lstObraSocial" cssClass="form-control"
 								name="persona.datosMedico.idObraSocial" listKey="id"
-								listValue="nombre"></s:select>
+								listValue="abrev" headerKey="" headerValue="[NO POSEE]"></s:select>
 						</div>
 						<label class="col-lg-2 control-label control-label-left">PLAN:</label>
 						<div class="col-lg-3">

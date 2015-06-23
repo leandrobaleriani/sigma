@@ -23,6 +23,7 @@ public class AtencionAction extends BaseAction {
 	private Atencion atencion;
 	private Long idAtencion;
 	private String diagnostico;
+	private boolean internacion;
 	private Long idPersona;
 
 	private String RESULT = "result";
@@ -95,7 +96,7 @@ public class AtencionAction extends BaseAction {
 		List<ValidationError> validaciones = validarAtencion();
 		if (Utils.isEmptyCollection(validaciones)) {
 			try {
-				atencionBO.finalizar(idAtencion, diagnostico);
+				atencionBO.finalizar(idAtencion, diagnostico, internacion);
 				mensaje = getText("operacion.exito");
 				exito = Boolean.TRUE;
 			} catch (BusinessException bexc) {
@@ -112,7 +113,8 @@ public class AtencionAction extends BaseAction {
 		boolean exito = Boolean.FALSE;
 		String mensaje = "";
 		try {
-			atencionBO.finalizarMotivo(idAtencion, "AUSENCIA");
+			atencionBO.finalizarMotivo(idAtencion, "AUSENCIA", getLoggedUser()
+					.getId());
 			mensaje = getText("operacion.exito");
 			exito = Boolean.TRUE;
 		} catch (BusinessException bexc) {
@@ -123,12 +125,13 @@ public class AtencionAction extends BaseAction {
 		createJSONResponse(exito, mensaje, null);
 		return JSON;
 	}
-	
+
 	public String finalizarAtencion() throws Exception {
 		boolean exito = Boolean.FALSE;
 		String mensaje = "";
 		try {
-			atencionBO.finalizarMotivo(idAtencion, "CASO SIN CERRAR");
+			atencionBO.finalizarMotivo(idAtencion, "CASO SIN CERRAR",
+					getLoggedUser().getId());
 			mensaje = getText("operacion.exito");
 			exito = Boolean.TRUE;
 		} catch (BusinessException bexc) {
@@ -198,6 +201,14 @@ public class AtencionAction extends BaseAction {
 
 	public void setIdPersona(Long idPersona) {
 		this.idPersona = idPersona;
+	}
+
+	public boolean isInternacion() {
+		return internacion;
+	}
+
+	public void setInternacion(boolean internacion) {
+		this.internacion = internacion;
 	}
 
 }

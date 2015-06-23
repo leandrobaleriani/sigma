@@ -92,7 +92,7 @@ public class ParametricoBOImpl implements ParametricoBO {
 		try {
 			List<ObraSocial> obrasSociales = obraSocialDAO.getAll();
 			if (Utils.isNotEmptyCollection(obrasSociales)) {
-				Collections.sort(obrasSociales, new BeanComparator("nombre"));
+				Collections.sort(obrasSociales, new BeanComparator("abrev"));
 			}
 			return obrasSociales;
 		} catch (DataAccessException daexc) {

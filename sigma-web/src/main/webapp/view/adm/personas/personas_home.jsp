@@ -15,7 +15,7 @@
 		}
 
 		var options = {
-			url : '<c:url value="/persona/adm!search.action"/>',
+			url : '<c:url value="/persona/recepcion!search.action"/>',
 			target : '#contenedorAjax'
 		};
 
@@ -27,7 +27,7 @@
 	function nuevaPersona() {
 
 		var options = {
-			url : '<c:url value="/persona/adm!showNew.action"/>',
+			url : '<c:url value="/persona/recepcion!showNew.action"/>',
 			target : '#modalDialogContainer',
 			success : function() {
 				$('#modalDialogContainer').modal(modalOptions).modal("show");
@@ -47,7 +47,7 @@
 		$("#selectedItem").val(id);
 
 		var options = {
-			url : '<c:url value="/persona/adm!showEdit.action"/>',
+			url : '<c:url value="/persona/recepcion!showEdit.action"/>',
 			target : '#modalDialogContainer',
 			success : function() {
 				$('#modalDialogContainer').modal(modalOptions).modal("show");
@@ -63,7 +63,7 @@
 		$("#selectedItem").val(id);
 
 		var options = {
-			url : '<c:url value="/persona/recepcionar!showRecepcionar.action"/>',
+			url : '<c:url value="/persona/recepcion!showRecepcionar.action"/>',
 			target : '#modalDialogContainer',
 			success : function() {
 				$('#modalDialogContainer').modal(modalOptions).modal("show");

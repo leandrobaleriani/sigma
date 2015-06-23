@@ -16,6 +16,7 @@
 <script type="text/javascript" src="js/global.js"></script>
 <script type="text/javascript" src="js/displayTagAjax.js"></script>
 <script type="text/javascript" src="js/locales/bootstrap-datepicker.es.js"></script>
+<script type="text/javascript" src="js/Chart.min.js"></script>
 
 
 
@@ -66,12 +67,6 @@
 				$(this).val($(this).val().toUpperCase());
 			});
 			
-			$.ajax({
-				url: '<c:url value="/persona/adm.action"/>'
-				})
-				.done(function( data ) {
-					$("#container").html(data);
-				});
 			
 		});
 		

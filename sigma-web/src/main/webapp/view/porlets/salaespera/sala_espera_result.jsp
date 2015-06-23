@@ -26,7 +26,7 @@
 								value="fechaRecepcion" /> </b><br> <span
 						class="glyphicon glyphicon-log-out"></span>&nbsp;Atención:&nbsp;<b><s:property
 								value="fechaAtencion" /> </b><br> <br> <a role="button"
-						href="javascript:imprimirCabo('<s:property value="id" />');void(0);"
+						href="javascript:imprimirCabo_salaespera('<s:property value="id" />');void(0);"
 						class="btn btn-info btn-xs"><span
 							class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Imprimir
 							Cabo</a>&nbsp;&nbsp; <s:if test="enEspera">

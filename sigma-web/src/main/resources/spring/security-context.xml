@@ -18,6 +18,8 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/videos/**"
 			access="permitAll" />
+		<security:intercept-url pattern="/sounds/**"
+			access="permitAll" />
 		<security:intercept-url pattern="/login**"
 			access="permitAll" />
 		<security:intercept-url pattern="/logout"
@@ -26,12 +28,15 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/salaespera/**"
 			access="permitAll" />
-		<security:intercept-url pattern="/**"
-			access="hasRole('SIG-ING')" />
 
-		<!-- <security:form-login login-page="/login.action" -->
-		<!-- always-use-default-target="true" authentication-failure-url="/login.action?error=true" -->
-		<!-- default-target-url="/home.action" authentication-success-handler-ref="authenticationSuccessHandler"/> -->
+		<security:intercept-url pattern="/persona/atencion!finalizarAusencia.action*"
+			access="hasAnyRole('ROL_REC','ROL_MED', 'ROL_DIR', 'ROL_ADM')" />
+
+		<security:intercept-url pattern="/persona/atencion*"
+			access="hasAnyRole('ROL_MED', 'ROL_DIR', 'ROL_ADM')" />
+
+		<security:intercept-url pattern="/persona/recepcion*"
+			access="hasAnyRole('ROL_REC', 'ROL_DIR', 'ROL_ADM')" />
 
 		<security:form-login login-page="/login.action"
 			always-use-default-target="true" authentication-failure-url="/login.action?error=true"
@@ -39,6 +44,10 @@
 
 		<security:logout logout-success-url="/login.action"
 			invalidate-session="true" />
+
+		<security:intercept-url pattern="/**"
+			access="isAuthenticated()" />
+
 	</security:http>
 
 	<bean id="authenticationSuccessHandler" class="sigma.authentication.CustomAuthenticationSuccessHandler" />

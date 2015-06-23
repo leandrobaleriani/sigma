@@ -45,6 +45,10 @@ public class Atencion extends BaseEntity {
 	private String motivo;
 	@Column(name = "CANCELACION_ATENCION")
 	private Date cancelacionAtencion;
+	@Column(name = "ID_USUARIO_CANCELACION")
+	private Long idUsuarioCancelacion;
+	@Column(name = "INTERNACION")
+	private boolean internacion;
 
 	public Long getIdUsuarioRecepcion() {
 		return idUsuarioRecepcion;
@@ -140,6 +144,22 @@ public class Atencion extends BaseEntity {
 
 	public void setCancelacionAtencion(Date cancelacionAtencion) {
 		this.cancelacionAtencion = cancelacionAtencion;
+	}
+
+	public Long getIdUsuarioCancelacion() {
+		return idUsuarioCancelacion;
+	}
+
+	public void setIdUsuarioCancelacion(Long idUsuarioCancelacion) {
+		this.idUsuarioCancelacion = idUsuarioCancelacion;
+	}
+
+	public boolean isInternacion() {
+		return internacion;
+	}
+
+	public void setInternacion(boolean internacion) {
+		this.internacion = internacion;
 	}
 
 }

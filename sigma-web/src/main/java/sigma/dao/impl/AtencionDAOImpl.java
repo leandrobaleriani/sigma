@@ -1,5 +1,6 @@
 package sigma.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.PersistenceException;
@@ -82,6 +83,8 @@ public class AtencionDAOImpl extends GenericHBDAOImpl<Atencion> implements
 		Estado estadoFilter = filter.getEstado();
 		Long idUsuarioAtencion = filter.getIdUsuarioAtencion();
 		Long idPersona = filter.getIdPersona();
+		Date desde = filter.getDesde();
+		Date hasta = filter.getHasta();
 		// Long idLugarAtencion = filter.getIdLugarAtencion();
 
 		if (null != estados) {
@@ -93,9 +96,8 @@ public class AtencionDAOImpl extends GenericHBDAOImpl<Atencion> implements
 							.conjunction(Restrictions.isNull("finAtencion"),
 									Restrictions.isNull("cancelacionAtencion"))));
 				} else if (estado.equals(Estado.ESPERA)) {
-					crit.add(Restrictions.conjunction(
-							Restrictions.isNull("inicioAtencion"),
-							Restrictions
+					crit.add(Restrictions.conjunction(Restrictions
+							.isNull("inicioAtencion"), Restrictions
 							.conjunction(Restrictions.isNull("finAtencion"),
 									Restrictions.isNull("cancelacionAtencion"))));
 				} else {
@@ -110,15 +112,14 @@ public class AtencionDAOImpl extends GenericHBDAOImpl<Atencion> implements
 		if (null != estadoFilter) {
 			if (estadoFilter.equals(Estado.ATENCION)) {
 				criteria.add(Restrictions.conjunction(Restrictions
-						.isNotNull("inicioAtencion"), Restrictions
-						.conjunction(Restrictions.isNull("finAtencion"),
-								Restrictions.isNull("cancelacionAtencion"))));
+						.isNotNull("inicioAtencion"), Restrictions.conjunction(
+						Restrictions.isNull("finAtencion"),
+						Restrictions.isNull("cancelacionAtencion"))));
 			} else if (estadoFilter.equals(Estado.ESPERA)) {
-				criteria.add(Restrictions.conjunction(
-						Restrictions.isNull("inicioAtencion"),
-						Restrictions
-						.conjunction(Restrictions.isNull("finAtencion"),
-								Restrictions.isNull("cancelacionAtencion"))));
+				criteria.add(Restrictions.conjunction(Restrictions
+						.isNull("inicioAtencion"), Restrictions.conjunction(
+						Restrictions.isNull("finAtencion"),
+						Restrictions.isNull("cancelacionAtencion"))));
 			} else {
 				criteria.add(Restrictions.conjunction(
 						Restrictions.isNotNull("inicioAtencion"),
@@ -135,9 +136,9 @@ public class AtencionDAOImpl extends GenericHBDAOImpl<Atencion> implements
 			criteria.add(Restrictions.eq("idPersona", idPersona));
 		}
 
-		// if (null == idLugarAtencion) {
-		// criteria.add(Restrictions.eq("idLugarAtencion", idLugarAtencion));
-		// }
+		if (null != desde && null != hasta) {
+			criteria.add(Restrictions.between("inicioAtencion", desde, hasta));
+		}
 
 		return criteria;
 	}

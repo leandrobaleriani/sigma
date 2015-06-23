@@ -22,7 +22,7 @@ public class UrgenciaBOImpl implements UrgenciaBO {
 		try {
 			UserFilter filter = new UserFilter();
 			filter.setEnUrgencia(Boolean.FALSE);
-			filter.setPrestador(Boolean.TRUE);
+			filter.setMedico(Boolean.TRUE);
 			return userDAO.search(filter);
 		} catch (DataAccessException daexc) {
 			LOGGER.error("Error al realizar busqueda de Usuarios", daexc);
@@ -35,7 +35,7 @@ public class UrgenciaBOImpl implements UrgenciaBO {
 		try {
 			UserFilter filter = new UserFilter();
 			filter.setEnUrgencia(Boolean.TRUE);
-			filter.setPrestador(Boolean.TRUE);
+			filter.setMedico(Boolean.TRUE);
 			return userDAO.search(filter);
 		} catch (DataAccessException daexc) {
 			LOGGER.error("Error al realizar busqueda de Usuarios", daexc);

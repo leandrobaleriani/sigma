@@ -11,7 +11,13 @@
 
 	<bean id="persona.action" class="sigma.actions.PersonaAction"
 		scope="prototype">
-		<property name="paginationHelper" ref="paginator.helper" />
+		<property name="paginationHelper">
+			<bean class="sigma.helpers.PaginationHelper" scope="prototype">
+				<property name="defaultPageSize" value="10" />
+				<property name="defaultSortField" value="nombreCompleto" />
+				<property name="defaultOrder" value="asc" />
+			</bean>
+		</property>
 		<property name="personaBO" ref="persona.tx.bo" />
 		<property name="parametricoBO" ref="parametrico.tx.bo" />
 		<property name="atencionBO" ref="atencion.tx.bo" />
@@ -21,12 +27,19 @@
 		scope="prototype">
 		<property name="atencionBO" ref="atencion.tx.bo" />
 		<property name="parametricoBO" ref="parametrico.tx.bo" />
+		<property name="urgenciaBO" ref="urgencia.tx.bo" />
 	</bean>
 
 	<bean id="atencion.action" class="sigma.actions.AtencionAction"
 		scope="prototype">
 		<property name="atencionBO" ref="atencion.tx.bo" />
 	</bean>
+
+	<bean id="reporte.action" class="sigma.actions.ReporteAction"
+		scope="prototype">
+		<property name="atencionBO" ref="atencion.tx.bo" />
+	</bean>
+
 
 	<bean id="parametrico.action" class="sigma.actions.ParametricoAction"
 		scope="prototype">
@@ -38,11 +51,9 @@
 		<property name="urgenciaBO" ref="urgencia.tx.bo" />
 	</bean>
 
-	<bean id="paginator.helper" class="sigma.helpers.PaginationHelper"
+	<bean id="dashboard.action" class="sigma.actions.DashboardAction"
 		scope="prototype">
-		<property name="defaultPageSize" value="10" />
-		<property name="defaultSortField" value="" />
-		<property name="defaultOrder" value="asc" />
+		<property name="atencionBO" ref="atencion.tx.bo" />
 	</bean>
 
 </beans>

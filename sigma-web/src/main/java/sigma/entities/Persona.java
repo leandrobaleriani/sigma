@@ -2,7 +2,6 @@ package sigma.entities;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,8 +9,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Formula;
 
 import sigma.utils.SigmaUtils;
 
@@ -48,7 +48,8 @@ public class Persona extends BaseEntity {
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "TIPO_DOC")
 	private TipoDocEnum tipoDoc;
-	@OneToOne(fetch = FetchType.EAGER, mappedBy = "persona", cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ID_DATOS_MEDICOS")
 	private DatosMedico datosMedico;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ID_BARRIO", insertable = false, updatable = false)
@@ -59,8 +60,8 @@ public class Persona extends BaseEntity {
 	private String observacionBarrio;
 	@Column(name = "MAIL")
 	private String mail;
-	@Column(name = "PACIENTE")
-	private boolean paciente;
+	@Formula("(SELECT CONCAT_WS(' ', p.APELLIDO, p.NOMBRE) from personas p WHERE p.ID = ID)")
+	private String nombreCompleto;
 
 	public Long getDoc() {
 		return doc;
@@ -191,15 +192,11 @@ public class Persona extends BaseEntity {
 	}
 
 	public String getNombreCompleto() {
-		return this.nombre + " " + this.apellido;
+		return nombreCompleto;
 	}
 
-	public boolean isPaciente() {
-		return paciente;
-	}
-
-	public void setPaciente(boolean paciente) {
-		this.paciente = paciente;
+	public void setNombreCompleto(String nombreCompleto) {
+		this.nombreCompleto = nombreCompleto;
 	}
 
 	public int getEdad() {

@@ -2,8 +2,6 @@ package sigma.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -17,11 +15,6 @@ public class Role extends BaseEntity {
 
 	@Column(name = "CODIGO")
 	private String codigo;
-	@ManyToOne
-	@JoinColumn(name = "ID_APLICACION", insertable = false, updatable = false)
-	private Aplicacion aplicacion;
-	@Column(name = "ID_APLICACION")
-	private Long idAplicacion;
 	@Column(name = "DESCRIPCION")
 	private String descripcion;
 
@@ -40,28 +33,12 @@ public class Role extends BaseEntity {
 		this.codigo = codigo;
 	}
 
-	public Aplicacion getAplicacion() {
-		return aplicacion;
-	}
-
-	public void setAplicacion(Aplicacion aplicacion) {
-		this.aplicacion = aplicacion;
-	}
-
 	public String getDescripcion() {
 		return descripcion;
 	}
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
-	}
-
-	public Long getIdAplicacion() {
-		return idAplicacion;
-	}
-
-	public void setIdAplicacion(Long idAplicacion) {
-		this.idAplicacion = idAplicacion;
 	}
 
 }

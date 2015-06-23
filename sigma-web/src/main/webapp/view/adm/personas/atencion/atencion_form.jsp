@@ -70,6 +70,8 @@
 			</div>
 			<div class="modal-body">
 				<div class="row">
+					<div class="alert alert-danger" style="display: none;"
+				id="errorPanel" role="alert"></div>
 					<div class="col-md-6 col-md-offset-3">
 						<h4 class="panel-title">
 							<span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp; <b><s:property
@@ -160,7 +162,7 @@
 							<div class="panel-heading">
 								<span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Diagnóstico
 							</div>
-							<div class="panel-body">
+							<div class="panel-body" id="wrapper_diagnostico">
 								<s:if test="%{atencion.finAtencion == null}">
 									<textarea id="field_diagnostico" name="diagnostico"
 										class="form-control" rows="5"></textarea>
@@ -172,7 +174,14 @@
 						</div>
 					</div>
 				</div>
-
+				<div class="row">
+					<div class="col-xs-12 col-sm-12">
+						<div class="checkbox">
+							<label> <input type="checkbox" value="true" name="internacion"> Deriva a Internación
+							</label>
+						</div>
+					</div>
+				</div>
 			</div>
 
 			<div class="modal-footer">

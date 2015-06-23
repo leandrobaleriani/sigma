@@ -16,17 +16,22 @@
 		 intervals.splice(0, intervals.length);
 	}
 
-	function showPersonas() {
+	
+	<s:if test="#session.loggedUser.isRecepcionista()">
+	function showRecepciones() {
 		clearIntervals();
 		$.ajax({
-			url : '<c:url value="/persona/adm.action"/>'
+			url : '<c:url value="/persona/recepcion.action"/>'
 		}).done(function(data) {
 			$("#menuPersona").addClass("active");
 			$("#menuAtencion").removeClass("active");
+			$("#menuDashboard").removeClass("active");
 			$("#container").html(data);
 		});
 	}
+	</s:if>
 	
+	<s:if test="#session.loggedUser.isMedico()">
 	function showAtenciones() {
 		clearIntervals();
 		$.ajax({
@@ -34,9 +39,25 @@
 		}).done(function(data) {
 			$("#menuAtencion").addClass("active");
 			$("#menuPersona").removeClass("active");
+			$("#menuDashboard").removeClass("active");
 			$("#container").html(data);
 		});
 	}
+	</s:if>
+	
+	<s:if test="#session.loggedUser.isDirectivo()">
+	function showDashboard() {
+		clearIntervals();
+		$.ajax({
+			url : '<c:url value="/dashboard/show.action"/>'
+		}).done(function(data) {
+			$("#menuDashboard").addClass("active");
+			$("#menuAtencion").removeClass("active");
+			$("#menuPersona").removeClass("active");
+			$("#container").html(data);
+		});
+	}
+	</s:if>
 	
 	function showInformacion(){
 		clearIntervals();
@@ -47,6 +68,16 @@
 			$('#modalDialogInfo').modal('show');
 		});
 	}
+	
+	<s:if test="#session.loggedUser.isRecepcionista()">
+	showRecepciones();
+	</s:if>	
+	<s:elseif test="#session.loggedUser.isMedico()">
+	showAtenciones();
+	</s:elseif>
+	<s:elseif test="#session.loggedUser.isDirectivo()">
+	showDashboard();
+	</s:elseif>
 	
 </script>
 
@@ -62,19 +93,33 @@
 			alt="" src="images/sigma-blanco.png" width="80px"></a>
 	</div>
 	<div class="navbar-collapse collapse navbar-responsive-collapse">
+		<s:if test="#session.loggedUser.isRecepcionista()">
 		<ul class="nav navbar-nav">
-			<li class="active" id="menuPersona"><a href="javascript:showPersonas();"> <img alt="" src="images/paciente.png" width="22px"> Recepción
+			<li class="active" id="menuPersona"><a href="javascript:showRecepciones();"> <img alt="" src="images/paciente.png" width="22px"> Recepción
 			</a></li>
 		</ul>
+		</s:if>
+		<s:if test="#session.loggedUser.isMedico()">
 		<ul class="nav navbar-nav">
 			<li  id="menuAtencion"><a href="javascript:showAtenciones();"> <img alt="" src="images/stethoscope.png" width="22px"> Atención
 			</a></li>
 		</ul>
+		</s:if>
+		<s:if test="#session.loggedUser.isDirectivo()">
+		<ul class="nav navbar-nav">
+			<li  id="menuDashboard"><a href="javascript:showDashboard();"> <img alt="" src="images/dashboard.png" width="22px"> Dashboard
+			</a></li>
+		</ul>
+		</s:if>
 		<ul class="nav navbar-nav navbar-right">
 			<li class="dropdown"><a href="#" class="dropdown-toggle"
 				data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span><b>
-						<s:property value="#session.loggedUser" />
-						(<s:property value="#session.lugarAtencion.nombre" />)
+						<s:property value="#session.loggedUser.nombreCompleto" />
+<%-- 						(<s:property value="#session.lugarAtencion.nombre" />) --%>
+				<s:iterator value="#session.loggedUser.roles">
+				<s:property value="codigo"/>
+				</s:iterator>
+
 				</b><b class="caret"></b></a>
 				<ul class="dropdown-menu">
 					<li><a href="#"><span class="glyphicon glyphicon-pencil"></span>

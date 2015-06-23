@@ -69,6 +69,10 @@
 		});
 	}
 	
+	function imprimirCabo_salaespera(idAtencion){
+		window.open('<c:url value="/reportes/atencion!imprimirCabo.action"/>?idAtencion=' + idAtencion);
+	}
+	
 </script>
 
 <div class="panel panel-primary" id="contenedorAjax_salaespera"></div>

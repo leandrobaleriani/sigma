@@ -1,27 +1,16 @@
 package sigma.entities;
 
 public enum SexoEnum {
+	MASCULINO("M"), FEMENINO("F");
 
-	M(1, "MASCULINO"), F(2, "FEMENINO");
+	private String codigo;
 
-	private int id;
-	private String descripcion;
-
-	private SexoEnum(int id, String descripcion) {
-		this.id = id;
-		this.descripcion = descripcion;
+	private SexoEnum(String codigo) {
+		this.codigo = codigo;
 	}
 
-	public int getId() {
-		return id;
+	public String getCodigo() {
+		return codigo;
 	}
 
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	@Override
-	public String toString() {
-		return descripcion;
-	}
 }

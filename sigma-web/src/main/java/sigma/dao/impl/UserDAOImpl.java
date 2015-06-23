@@ -79,8 +79,7 @@ public class UserDAOImpl extends GenericHBDAOImpl<User> implements UserDAO {
 		Set<Role> roles = usuario.getRoles();
 		if (Utils.isNotEmptyCollection(roles)) {
 			for (Role role : roles) {
-				rolesUsuario.add(new AtheneaRole(role.getCodigo(), role
-						.getDescripcion(), role.getAplicacion().getNombre()));
+				rolesUsuario.add(new AtheneaRole(role.getCodigo()));
 			}
 		}
 
@@ -130,7 +129,7 @@ public class UserDAOImpl extends GenericHBDAOImpl<User> implements UserDAO {
 		// Filtros
 		String nroDoc = filter.getDni();
 		Boolean enUrgencia = filter.getEnUrgencia();
-		Boolean prestador = filter.getPrestador();
+		Boolean medico = filter.getMedico();
 		
 		if (null != nroDoc) {
 			criteria.createAlias("persona", "persona");
@@ -141,8 +140,13 @@ public class UserDAOImpl extends GenericHBDAOImpl<User> implements UserDAO {
 			criteria.add(Restrictions.eq("urgencia", enUrgencia));
 		}
 		
-		if (null != prestador) {
-			criteria.add(Restrictions.eq("prestador", prestador));
+		if (null != medico) {
+			criteria.createAlias("roles", "roles");
+			if (medico) {
+				criteria.add(Restrictions.eq("roles.codigo", "ROL_MED"));
+			} else {
+				criteria.add(Restrictions.ne("roles.codigo", "ROL_MED"));
+			}
 		}
 
 		return criteria;

@@ -15,8 +15,7 @@
 	<include file="struts/*.xml" />
 
 
-
-	<package name="default" extends="struts-default, json-default">
+	<package name="default" extends="struts-default, json-default, jasperreports-default">
 
 		<global-results>
 			<result name="errorResult">/view/error.jsp</result>
